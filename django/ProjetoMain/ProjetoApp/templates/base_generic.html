@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha3app</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Cor de fundo */
+        }
+        .sidebar {
+            background-color: #343a40; /* Cor da sidebar */
+            /*height: 100vh; /* Altura total da tela */
+            padding: 20px; /* Padding */
+        }
+        .sidebar a {
+            color: #ffffff; /* Cor do texto */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 15px; /* Padding dos links */
+            display: block; /* Faz o link ocupar toda a largura */
+            border-radius: 5px; /* Bordas arredondadas */
+        }
+        .sidebar a:hover {
+            background-color: #495057; /* Cor ao passar o mouse */
+        }
+        .content {
+            padding: 20px; /* Padding do conteúdo */
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-sm-2 sidebar">
+                {% block sidebar %}
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'users' %}">Utilizadores</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'speakers' %}">Palestrantes</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'companies' %}">Empresas</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Todos eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos inscritos</a></li>
+                    </ul>
+                {% endblock %}
+            </nav>
+            <main class="col-sm-10 content">{% block content %}{% endblock %}</main>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

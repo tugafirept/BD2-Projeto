@@ -1,0 +1,30 @@
+Plataforma de Gestão de Eventos
+
+
+Enquadramento: Um sistema para gerir eventos com informações sobre participantes, palestrantes e empresas.
+
+Objetivos:
+
+    Permitir a organização e gestão de eventos.
+    Facilitar a inscrição de utilizadores.
+    Gerir palestrantes, empresas e utilizadores envolvidos nos eventos.
+
+Requisitos:
+
+    Entidades de dados: Eventos, administradores, utilizadores, palestrantes,Pagamentos(Faturas), empresas, Despesas(Empresa regista despesas do evento), inscrições, (utilizadores incritos nos eventos).
+    Fluxos de dados: Utilizadores e empresas(entidades externas).
+
+Tecnologias:
+
+    Interface web para inscrição e criação de eventos.
+    PostgreSQL para eventos, palestrantes, inscrições e empresas.
+    MongoDB para guardar feedback/avaliações dos eventos (2 tabelas em mongo 1 de avaliações outra com comentarios dos eventos)
+
+plataforma onde empresas se podem registar e gerir os seus eventos
+utilizadores associados a empresas e eventos
+Registo de pagamentos para irem aos eventos
+Empresas pagam aos palestrantes e local
+Orçamento da fatura associado as despesas
+
+
+faturas 

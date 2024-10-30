@@ -6,13 +6,26 @@
     <title>Ficha3app</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        html, body {
+            height: 100%; /* Faz o HTML e body ocupar 100% da altura */
+            margin: 0; /* Remove margens padrão */
+        }
         body {
             background-color: #f8f9fa; /* Cor de fundo */
         }
+        .container-fluid {
+            height: 100%; /* Faz o container ocupar 100% da altura */
+        }
+        .row {
+            height: 100%; /* Faz a linha ocupar 100% da altura */
+        }
         .sidebar {
             background-color: #343a40; /* Cor da sidebar */
-            /*height: 100vh; /* Altura total da tela */
             padding: 20px; /* Padding */
+            height: 100%; /* Faz a sidebar ocupar 100% da altura */
+            display: flex; /* Usa flexbox para organizar elementos */
+            flex-direction: column; /* Coloca os elementos em coluna */
+            justify-content: space-between; /* Espaça o conteúdo verticalmente */
         }
         .sidebar a {
             color: #ffffff; /* Cor do texto */
@@ -26,6 +39,8 @@
         }
         .content {
             padding: 20px; /* Padding do conteúdo */
+            height: 100%; /* Faz o conteúdo ocupar 100% da altura */
+            overflow-y: auto; /* Permite rolagem se o conteúdo exceder a altura */
         }
     </style>
 </head>
@@ -38,10 +53,13 @@
                         <li class="nav-item"><a class="nav-link" href="{% url 'users' %}">Utilizadores</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'speakers' %}">Palestrantes</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'companies' %}">Empresas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Todos eventos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos inscritos</a></li>
                     </ul>
                 {% endblock %}
+                <div class="mt-3">
+                    <a href="{% url 'login' %}" class="btn btn-danger btn-block">Logout</a> <!-- Botão de Logout -->
+                </div>
             </nav>
             <main class="col-sm-10 content">{% block content %}{% endblock %}</main>
         </div>

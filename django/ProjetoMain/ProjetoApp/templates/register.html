@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registar</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function toggleFields() {
+            var role = document.getElementById("role").value;
+            var birthdateField = document.getElementById("birthdateField");
+            var localField = document.getElementById("localField");
+            var phoneField = document.getElementById("phoneField");
+
+            if (role === "utilizador") {
+                birthdateField.style.display = "block";
+                localField.style.display = "none";
+                phoneField.style.display = "none";
+            } else if (role === "empresa") {
+                birthdateField.style.display = "none";
+                localField.style.display = "block";
+                phoneField.style.display = "block";
+            } else {
+                birthdateField.style.display = "none";
+                localField.style.display = "none";
+                phoneField.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Registar</h1>
+        <form action="{% url 'users' %}" method="GET">  <!-- Redireciona para a página de utilizadores -->
+            <div class="form-group">
+                <label for="role">Registar como:</label>
+                <select class="form-control" id="role" name="role" required onchange="toggleFields()">
+                    <option value="">Escolha uma opção</option>
+                    <option value="empresa">Empresa</option>
+                    <option value="utilizador">Utilizador</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="name">Nome:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group" id="birthdateField" style="display: none;">
+                <label for="birthdate">Data de Nascimento:</label>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" required>
+            </div>
+            <div class="form-group" id="localField" style="display: none;">
+                <label for="local">Local:</label>
+                <input type="text" class="form-control" id="local" name="local">
+            </div>
+            <div class="form-group" id="phoneField" style="display: none;">
+                <label for="phone">Telefone:</label>
+                <input type="tel" class="form-control" id="phone" name="phone">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Senha:</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Registar</button>
+            <a href="{% url 'login' %}" class="btn btn-secondary ml-2">Voltar para Login</a> <!-- Botão para voltar à página de login -->
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

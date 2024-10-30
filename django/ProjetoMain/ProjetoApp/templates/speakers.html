@@ -2,6 +2,12 @@
 
 {% block content %}
     <h1>Lista de Palestrantes</h1>
+
+    <!-- Botão para registar como palestrante -->
+    <div class="mb-3">
+        <a href="" class="btn btn-primary">Registar como Palestrante</a>
+    </div>
+
     <table class="table table-striped">
         <thead>
             <tr>
@@ -25,6 +31,7 @@
                 <td>300.00€</td> <!-- Custo -->
                 <td>2024-03-01</td> <!-- Data que ficou Palestrante -->
                 <td>
+                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar palestrante 1')">Eliminar</button>
                 </td>
             </tr>
@@ -37,6 +44,7 @@
                 <td>250.00€</td> <!-- Custo -->
                 <td>2024-03-02</td> <!-- Data que ficou Palestrante -->
                 <td>
+                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar palestrante 2')">Eliminar</button>
                 </td>
             </tr>

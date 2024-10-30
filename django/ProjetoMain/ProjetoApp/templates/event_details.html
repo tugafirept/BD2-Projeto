@@ -1,0 +1,142 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="mb-4">Detalhes do Evento: <span class="text-primary">Conferência de Tecnologia</span></h1>
+
+        <!-- Nova seção com informações do evento -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Informações do Evento</h2>
+            </div>
+            <div class="card-body">
+                <p><strong>Nome:</strong> Conferência de Tecnologia</p>
+                <p><strong>Nome da Empresa:</strong> Tech Innovations</p>
+                <p><strong>Palestrante:</strong> João Silva</p>
+                <p><strong>Telefone:</strong> 1234-567-890</p>
+                <p><strong>Descrição:</strong> Uma conferência sobre as últimas inovações em tecnologia.</p>
+                <p><strong>Data:</strong> 2024-05-15</p>
+                <p><strong>Local:</strong> Auditório Central</p>
+                <p><strong>Preço de Inscrição:</strong> 5€</p>
+                <p><strong>Preço Total do Evento:</strong> 50.00€</p>
+                <p><strong>Data de Criação:</strong> 2024-01-10</p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Despesas</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Palestrante</th>
+                            <th>Total</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>João Silva</td>
+                            <td>2000€</td>
+                            <td>2024-05-01</td>
+                        </tr>
+                        <tr>
+                            <td>Maria Oliveira</td>
+                            <td>1500€</td>
+                            <td>2024-05-02</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Pagamentos</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Utilizador Inscrito</th>
+                            <th>Total</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Carlos Pereira</td>
+                            <td>5€</td>
+                            <td>2024-05-10</td>
+                        </tr>
+                        <tr>
+                            <td>Ana Costa</td>
+                            <td>5€</td>
+                            <td>2024-05-11</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Avaliações</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Avaliação</th>
+                            <th>Data da Avaliação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>José Santos</td>
+                            <td>4</td>
+                            <td>2024-05-12</td>
+                        </tr>
+                        <tr>
+                            <td>Luiza Ferreira</td>
+                            <td>5</td>
+                            <td>2024-05-13</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2 class="mb-0">Comentários</h2>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Comentário</th>
+                            <th>Data do Comentário</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Pedro Lima</td>
+                            <td>Ótima conferência, aprendi muito!</td>
+                            <td>2024-05-14</td>
+                        </tr>
+                        <tr>
+                            <td>Rita Alves</td>
+                            <td>Foi uma experiência incrível!</td>
+                            <td>2024-05-15</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

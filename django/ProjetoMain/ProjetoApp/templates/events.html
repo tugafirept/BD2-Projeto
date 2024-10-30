@@ -7,14 +7,9 @@
             <tr>
                 <th>Nome</th>
                 <th>Nome da Empresa</th>
-                <th>Nome do Palestrante</th>
                 <th>Data</th>
                 <th>Local</th>
-                <th>Telefone</th>
-                <th>Descrição</th>
-                <th>Preço inscrição</th>
-                <th>Preço Total do Evento</th>
-                <th>Data de Criação</th>
+                <th>Preço de Inscrição</th>
                 <th>Ação</th>
             </tr>
         </thead>
@@ -22,33 +17,27 @@
             <tr>
                 <td>Conferência de Tecnologia</td>
                 <td>Tech Innovations</td>
-                <td>João Silva</td>
                 <td>2024-05-15</td>
                 <td>Auditório Central</td>
-                <td>1234-567-890</td>
-                <td>Uma conferência sobre as últimas inovações em tecnologia.</td>
                 <td>5€</td>
-                <td>50.00€</td>
-                <td>2024-01-10</td>
                 <td>
-                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever')">Inscrever</button>
+                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 1')">Eliminar</button>
+                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Conferência de Tecnologia')">Inscrever</button>
+                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->
                 </td>
             </tr>
             <tr>
                 <td>Workshop de Desenvolvimento Web</td>
                 <td>Web Solutions</td>
-                <td>Maria Oliveira</td>
                 <td>2024-06-20</td>
                 <td>Centro de Convenções</td>
-                <td>0987-654-321</td>
-                <td>Um workshop prático de desenvolvimento web.</td>
                 <td>5€</td>
-                <td>30.00€</td>
-                <td>2024-02-01</td>
                 <td>
-                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever')">Inscrever</button>
+                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 2')">Eliminar</button>
+                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Workshop de Desenvolvimento Web')">Inscrever</button>
+                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->
                 </td>
             </tr>
         </tbody>

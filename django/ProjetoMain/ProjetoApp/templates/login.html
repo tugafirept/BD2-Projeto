@@ -5,10 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .login-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #343a40;
+        }
+        .btn-primary {
+            width: 100%;
+        }
+        .btn-secondary {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Login</h1>
+    <div class="container login-container mt-5">
+        <h1>Login</h1>
         <form action="{% url 'users' %}" method="GET">  <!-- Redireciona para a página de utilizadores -->
             <div class="form-group">
                 <label for="role">Login como:</label>
@@ -28,8 +53,9 @@
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
         </form>
-        <a href="{% url 'register' %}" class="btn btn-secondary mt-3">Registar</a> <!-- Botão para ir à página de registro -->
+        <a href="{% url 'register' %}" class="btn btn-secondary">Registar</a> <!-- Botão para ir à página de registro -->
     </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

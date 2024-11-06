@@ -1,20 +1,15 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1>Lista de Eventos inscritos</h1>
+    <h1>Lista de Eventos Inscritos</h1>
     <table class="table table-striped">
         <thead>
             <tr>
                 <th>Nome</th>
                 <th>Nome da Empresa</th>
-                <th>Nome do Palestrante</th>
                 <th>Data</th>
                 <th>Local</th>
-                <th>Telefone</th>
-                <th>Descrição</th>
-                <th>Preço inscrição</th>
-                <th>Preço Total do Evento</th>
-                <th>Data de Criação</th>
+                <th>Preço de Inscrição</th>
                 <th>Ação</th>
             </tr>
         </thead>
@@ -22,33 +17,88 @@
             <tr>
                 <td>Conferência de Tecnologia</td>
                 <td>Tech Innovations</td>
-                <td>João Silva</td>
                 <td>2024-05-15</td>
                 <td>Auditório Central</td>
-                <td>1234-567-890</td>
-                <td>Uma conferência sobre as últimas inovações em tecnologia.</td>
                 <td>5€</td>
-                <td>50.00€</td>
-                <td>2024-01-10</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar inscricao evento 1')">Eliminar inscrição</button>
+                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
+                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <button class="btn btn-danger btn-sm" onclick="alert('Cancelar Inscrição')">Cancelar Insc</button>
                 </td>
             </tr>
             <tr>
                 <td>Workshop de Desenvolvimento Web</td>
                 <td>Web Solutions</td>
-                <td>Maria Oliveira</td>
                 <td>2024-06-20</td>
                 <td>Centro de Convenções</td>
-                <td>0987-654-321</td>
-                <td>Um workshop prático de desenvolvimento web.</td>
                 <td>5€</td>
-                <td>30.00€</td>
-                <td>2024-02-01</td>
                 <td>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar inscricao evento 2')">Eliminar inscrição</button>
+                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
+                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
+                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a>
+                    <button class="btn btn-danger btn-sm" onclick="alert('Cancelar Inscrição')">Cancelar Insc</button>
                 </td>
             </tr>
         </tbody>
     </table>
+
+    <!-- Modal de Comentário -->
+    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="commentModalLabel">Adicionar Comentário</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="commentText">Comentário</label>
+                            <textarea class="form-control" id="commentText" rows="3" placeholder="Digite seu comentário aqui..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Comentário</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Avaliação -->
+    <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ratingModalLabel">Avaliar Evento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="ratingSelect">Escolha uma Avaliação</label>
+                            <select class="form-control" id="ratingSelect">
+                                <option value="0">0 - Muito Mau</option>
+                                <option value="1">1 - Mau</option>
+                                <option value="2">2 - Razoável</option>
+                                <option value="3">3 - Bom</option>
+                                <option value="4">4 - Muito Bom</option>
+                                <option value="5">5 - Excelente</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

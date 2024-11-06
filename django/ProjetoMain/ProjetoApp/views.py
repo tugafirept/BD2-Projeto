@@ -24,3 +24,21 @@ def registeredevents_view(request):
 
 def event_details_view(request):
     return render(request, 'event_details.html') 
+
+def edit_user_view(request):
+    return render(request, 'edit_user.html') 
+
+def edit_speaker_view(request):
+    return render(request, 'edit_speaker.html') 
+
+def edit_company_view(request):
+    return render(request, 'edit_company.html') 
+
+def edit_event_view(request):
+    return render(request, 'edit_event.html') 
+
+def edit_profile_view(request):
+    return render(request, 'edit_profile.html') 
+
+def create_event_view(request):
+    return render(request, 'create_event.html') 

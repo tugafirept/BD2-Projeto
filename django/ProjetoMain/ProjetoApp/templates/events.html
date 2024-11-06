@@ -2,6 +2,12 @@
 
 {% block content %}
     <h1>Lista de Eventos</h1>
+    
+    <!-- Botão para Criar Evento -->
+    <div class="mb-3">
+        <a href="{% url 'create_event' %}" class="btn btn-primary">Criar Novo Evento</a>
+    </div>
+    
     <table class="table table-striped">
         <thead>
             <tr>
@@ -21,7 +27,7 @@
                 <td>Auditório Central</td>
                 <td>5€</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
+                    <a class="btn btn-warning btn-sm" href="{% url 'edit_event' %}">Editar</a>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 1')">Eliminar</button>
                     <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Conferência de Tecnologia')">Inscrever</button>
                     <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->
@@ -34,7 +40,7 @@
                 <td>Centro de Convenções</td>
                 <td>5€</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
+                    <a class="btn btn-warning btn-sm" href="{% url 'edit_event' %}">Editar</a>
                     <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 2')">Eliminar</button>
                     <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Workshop de Desenvolvimento Web')">Inscrever</button>
                     <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->

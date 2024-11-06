@@ -1,0 +1,63 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Perfil do Utilizador</h2>
+        <form action="/profile_edition" method="post">
+
+            <!-- Campo para o Nome -->
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" class="form-control" value="Nome Atual" required>
+            </div>
+
+            <!-- Campo para o Email -->
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="email@exemplo.com" required>
+            </div>
+
+            <!-- Campo para a Password -->
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Digite a nova password">
+            </div>
+
+            <!-- Campo para a Data de Nascimento -->
+            <div class="form-group">
+                <label for="data_nascimento">Data de Nascimento</label>
+                <input type="date" id="data_nascimento" name="data_nascimento" class="form-control" value="1990-01-01" required>
+            </div>
+
+            <!-- Campo para a escolha de ser Palestrante -->
+            <div class="form-group">
+                <label for="palestrante">Deseja ser Palestrante?</label>
+                <select id="palestrante" name="palestrante" class="form-control" onchange="toggleCustoPalestrante(this)">
+                    <option value="nao">Não</option>
+                    <option value="sim">Sim</option>
+                </select>
+            </div>
+
+            <!-- Campo para o Custo do Palestrante (Escondido por padrão) -->
+            <div id="custo_palestrante_group" class="form-group" style="display: none;">
+                <label for="custo_palestrante">Custo de Palestrante (€)</label>
+                <input type="number" id="custo_palestrante" name="custo_palestrante" class="form-control" min="0" placeholder="Insira o custo">
+            </div>
+
+            <!-- Botões de Ação -->
+            <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+        </form>
+    </div>
+
+    <script>
+        // Função para mostrar/esconder o campo de custo do palestrante
+        function toggleCustoPalestrante(select) {
+            var custoGroup = document.getElementById("custo_palestrante_group");
+            if (select.value === "sim") {
+                custoGroup.style.display = "block";
+            } else {
+                custoGroup.style.display = "none";
+            }
+        }
+    </script>
+{% endblock %}

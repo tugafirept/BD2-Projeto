@@ -63,6 +63,34 @@ alter table UTILIZADORES
 drop table UTILIZADORES;
 
 /*==============================================================*/
+/* Table: UTILIZADORES                                          */
+/*==============================================================*/
+create table UTILIZADORES (
+   ID_UTILIZADOR        integer              not null,
+   NOME                 varchar(100),
+   EMAIL                varchar(150)         not null,
+   PASSWORD             varchar(100)         not null,
+   DATA_NASCIMENTO      timestamp,
+   DATA_REGISTO         timestamp
+);
+
+alter table UTILIZADORES
+   add constraint PK_UTILIZADORES primary key (ID_UTILIZADOR);
+
+/*==============================================================*/
+/* Table: PALESTRANTES                                          */
+/*==============================================================*/
+create table PALESTRANTES (
+   ID_UTILIZADOR        integer              not null,
+   DATAFICOUPALESTRANTE timestamp,
+   CUSTOPALESTRANTE     decimal
+);
+
+alter table PALESTRANTES
+   add constraint PK_PALESTRANTES primary key (ID_UTILIZADOR);
+
+
+/*==============================================================*/
 /* Table: ADMINISTRADORES                                       */
 /*==============================================================*/
 create table ADMINISTRADORES (
@@ -72,34 +100,6 @@ create table ADMINISTRADORES (
 
 alter table ADMINISTRADORES
    add constraint PK_ADMINISTRADORES primary key (ID_UTILIZADOR);
-
-/*==============================================================*/
-/* Table: DESPESAS                                              */
-/*==============================================================*/
-create table DESPESAS (
-   ID_DESPESA           integer              not null,
-   ID_EVENTO            integer,
-   ID_UTILIZADOR        integer,
-   TOTAL                decimal              not null,
-   DATA                 timestamp
-);
-
-alter table DESPESAS
-   add constraint PK_DESPESAS primary key (ID_DESPESA);
-
-/*==============================================================*/
-/* Index: EVENTOS_DESPESAS_FK                                   */
-/*==============================================================*/
-create  index EVENTOS_DESPESAS_FK on DESPESAS (
-ID_EVENTO
-);
-
-/*==============================================================*/
-/* Index: DESPESAS_PALESTRANTES_FK                              */
-/*==============================================================*/
-create  index DESPESAS_PALESTRANTES_FK on DESPESAS (
-ID_UTILIZADOR
-);
 
 /*==============================================================*/
 /* Table: EMPRESAS                                              */
@@ -136,6 +136,35 @@ create table EVENTOS (
 
 alter table EVENTOS
    add constraint PK_EVENTOS primary key (ID_EVENTO);
+
+/*==============================================================*/
+/* Table: DESPESAS                                              */
+/*==============================================================*/
+create table DESPESAS (
+   ID_DESPESA           integer              not null,
+   ID_EVENTO            integer,
+   ID_UTILIZADOR        integer,
+   TOTAL                decimal              not null,
+   DATA                 timestamp
+);
+
+alter table DESPESAS
+   add constraint PK_DESPESAS primary key (ID_DESPESA);
+
+/*==============================================================*/
+/* Index: EVENTOS_DESPESAS_FK                                   */
+/*==============================================================*/
+create  index EVENTOS_DESPESAS_FK on DESPESAS (
+ID_EVENTO
+);
+
+/*==============================================================*/
+/* Index: DESPESAS_PALESTRANTES_FK                              */
+/*==============================================================*/
+create  index DESPESAS_PALESTRANTES_FK on DESPESAS (
+ID_UTILIZADOR
+);
+
 
 /*==============================================================*/
 /* Index: EMPRESAS_EVENTOS_FK                                   */
@@ -205,31 +234,4 @@ ID_EVENTO
 create  index INSCRICOES_PAGAMENTOS_FK on PAGAMENTOS (
 ID_INSCRICAO
 );
-
-/*==============================================================*/
-/* Table: PALESTRANTES                                          */
-/*==============================================================*/
-create table PALESTRANTES (
-   ID_UTILIZADOR        integer              not null,
-   DATAFICOUPALESTRANTE timestamp,
-   CUSTOPALESTRANTE     decimal
-);
-
-alter table PALESTRANTES
-   add constraint PK_PALESTRANTES primary key (ID_UTILIZADOR);
-
-/*==============================================================*/
-/* Table: UTILIZADORES                                          */
-/*==============================================================*/
-create table UTILIZADORES (
-   ID_UTILIZADOR        integer              not null,
-   NOME                 varchar(100),
-   EMAIL                varchar(150)         not null,
-   PASSWORD             varchar(100)         not null,
-   DATA_NASCIMENTO      timestamp,
-   DATA_REGISTO         timestamp
-);
-
-alter table UTILIZADORES
-   add constraint PK_UTILIZADORES primary key (ID_UTILIZADOR);
 

@@ -14,50 +14,19 @@
             </tr>
         </thead>
         <tbody>
+            {% for user in users %}
             <tr>
-                <td>1</td>
-                <td>João Silva</td>
-                <td>joao.silva@example.com</td>
-                <td>1990-05-15</td> <!-- Data de Nascimento -->
-                <td>2024-01-10</td> <!-- Data de Registo -->
+                <td>{{ user.0 }}</td> <!-- ID -->
+                <td>{{ user.1 }}</td> <!-- Nome -->
+                <td>{{ user.2 }}</td> <!-- Email -->
+                <td>{{ user.3 }}</td> <!-- Data de Nascimento -->
+                <td>{{ user.4 }}</td> <!-- Data de Registo -->
                 <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_user' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador 1')">Eliminar</button>
+                    <a class="btn btn-warning btn-sm" href="{% url 'edit_user' user.0 %}">Editar</a>
+                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador {{ user.0 }}')">Eliminar</button>
                 </td>
             </tr>
-            <tr>
-                <td>2</td>
-                <td>Maria Oliveira</td>
-                <td>maria.oliveira@example.com</td>
-                <td>1988-07-22</td> <!-- Data de Nascimento -->
-                <td>2024-01-11</td> <!-- Data de Registo -->
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_user' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador 2')">Eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Carlos Pereira</td>
-                <td>carlospereirita@example.com</td>
-                <td>1995-03-30</td> <!-- Data de Nascimento -->
-                <td>2024-01-12</td> <!-- Data de Registo -->
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_user' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador 3')">Eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>Ana Costa</td>
-                <td>anacosta@example.com</td>
-                <td>1992-11-08</td> <!-- Data de Nascimento -->
-                <td>2024-01-13</td> <!-- Data de Registo -->
-                <td>
-                    <button class="btn btn-warning btn-sm" onclick="alert('Editar')">Editar</button>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador 4')">Eliminar</button>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

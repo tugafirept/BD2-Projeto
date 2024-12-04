@@ -1,6 +1,6 @@
 # views.py
 from django.shortcuts import render, redirect
-from django.db import connections
+from django.db import connections, connection
 from .forms import RegistoForm
 from .basededados import ins_empresa, ins_utilizador
 
@@ -69,23 +69,19 @@ def edit_user_view(request, user_id):
         cursor.execute("SELECT Id_utilizador, Nome, Email, Data_Nascimento, Data_Registo FROM view_utilizadores WHERE Id_utilizador = %s", [user_id])
         user = cursor.fetchone()
 
-    if not user:
-        return render(request, '404.html', status=404)  # Renderiza uma página 404 se o utilizador não existir
-
     if request.method == 'POST':
-        # Lógica para atualizar os dados do utilizador usando SQL
+        # Dados enviados pelo formulário
         nome = request.POST.get('nome')
         email = request.POST.get('email')
         data_nascimento = request.POST.get('data_nascimento')
-        # Realizar atualização no banco se necessário
+
+        # Chamar o procedimento armazenado para atualizar os dados
         with connection.cursor() as cursor:
             cursor.execute("""
-                UPDATE Utilizadores
-                SET Nome = %s, Email = %s, Data_Nascimento = %s
-                WHERE Id_utilizador = %s
-            """, [nome, email, data_nascimento, user_id])
+                CALL proc_update_utilizador(%s, %s, %s, %s)
+            """, [user_id, nome, email, data_nascimento])
 
-        return render(request, 'success.html')  # Redireciona para uma página de sucesso ou lista de utilizadores
+        return redirect('users') # Redireciona para uma página de sucesso ou lista de utilizadores
 
     # Passa os dados do utilizador para o template
     context = {

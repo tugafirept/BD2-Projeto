@@ -9,55 +9,24 @@
                 <th>Email</th>
                 <th>Local</th>
                 <th>Telefone</th>
-                <th>Data de Registo</th>
+                <th>Data Registo</th>
                 <th>Ação</th>
             </tr>
         </thead>
         <tbody>
+            {% for company in companies %}
             <tr>
-                <td>Tech Innovations</td>
-                <td>contato@empresaa.com</td>
-                <td>Lisboa</td>
-                <td>123456789</td>
-                <td>2024-01-10</td>
+                <td>{{ company.1 }}</td> <!-- Nome -->
+                <td>{{ company.2 }}</td> <!-- Email -->
+                <td>{{ company.3 }}</td> <!-- Local -->
+                <td>{{ company.4 }}</td> <!-- Telefone -->
+                <td>{{ company.5 }}</td> <!-- Data de Registo -->
                 <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_company' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar empresa 1')">Eliminar</button>
+                    <a class="btn btn-warning btn-sm" href="{% url 'edit_company' company.0 %}">Editar</a>
+                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar emrpesa {{ company.0 }}')">Eliminar</button>
                 </td>
             </tr>
-            <tr>
-                <td>Web Solutions</td>
-                <td>contato@empresab.com</td>
-                <td>Porto</td>
-                <td>987654321</td>
-                <td>2024-01-11</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_company' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar empresa 2')">Eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Empresa C</td>
-                <td>contato@empresac.com</td>
-                <td>Coimbra</td>
-                <td>123123123</td>
-                <td>2024-01-12</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_company' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar empresa 3')">Eliminar</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Empresa D</td>
-                <td>contato@empresad.com</td>
-                <td>Braga</td>
-                <td>321321321</td>
-                <td>2024-01-13</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_company' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar empresa 4')">Eliminar</button>
-                </td>
-            </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

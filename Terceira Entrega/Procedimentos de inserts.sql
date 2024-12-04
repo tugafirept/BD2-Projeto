@@ -203,7 +203,6 @@ $BODY$;
 
 CREATE OR REPLACE PROCEDURE public.insert_palestrante(
     IN p_id_utilizador INTEGER,
-    IN p_data_ficou_palestrante TIMESTAMP DEFAULT NULL,
     IN p_custo_palestrante DECIMAL DEFAULT NULL
 )
 LANGUAGE 'plpgsql'
@@ -217,7 +216,7 @@ BEGIN
     )
     VALUES (
         p_id_utilizador,
-        COALESCE(p_data_ficou_palestrante, NOW()),  -- Define a data atual se nenhuma for fornecida
+        NOW(),  -- Define a data atual
         COALESCE(p_custo_palestrante, 0)           -- Define custo 0 se não fornecido
     );
 END;

@@ -37,7 +37,7 @@
             var localField = document.getElementById("localField");
             var phoneField = document.getElementById("phoneField");
 
-            if (role === "utilizador") {
+            if (role === "individual") {
                 birthdateField.style.display = "block";
                 localField.style.display = "none";
                 phoneField.style.display = "none";
@@ -46,7 +46,6 @@
                 localField.style.display = "block";
                 phoneField.style.display = "block";
             } else {
-                birthdateField.style.display = "none";
                 localField.style.display = "none";
                 phoneField.style.display = "none";
             }

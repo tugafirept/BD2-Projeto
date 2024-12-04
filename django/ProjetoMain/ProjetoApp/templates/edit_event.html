@@ -3,50 +3,55 @@
 {% block content %}
     <div class="container mt-5">
         <h2>Editar Evento</h2>
-        <form action="/save_event_edition" method="post"> <!-- Altere a action para o endpoint correto -->
+        <form method="POST">
+            {% csrf_token %}
+            
             <!-- Campo para o Nome do Evento -->
             <div class="form-group">
                 <label for="nome">Nome do Evento</label>
-                <input type="text" id="nome" name="nome" class="form-control" value="Nome Atual do Evento" required>
+                <input type="text" id="nome" name="nome" class="form-control" value="{{ event.nome }}" required>
             </div>
 
             <!-- Campo para a Data do Evento -->
             <div class="form-group">
                 <label for="data">Data</label>
-                <input type="date" id="data" name="data" class="form-control" value="2024-05-15" required>
+                <input type="datetime-local" id="data" name="data" class="form-control" value="{{ event.data|date:'Y-m-d H:i' }}" required>
             </div>
 
             <!-- Campo para o Local do Evento -->
             <div class="form-group">
                 <label for="local">Local</label>
-                <input type="text" id="local" name="local" class="form-control" value="Localização Atual" required>
+                <input type="text" id="local" name="local" class="form-control" value="{{ event.local }}" required>
             </div>
 
             <!-- Campo para o Telefone -->
             <div class="form-group">
                 <label for="telefone">Telefone</label>
-                <input type="tel" id="telefone" name="telefone" class="form-control" value="123456789" required>
+                <input type="tel" id="telefone" name="telefone" class="form-control" value="{{ event.telefone }}" required>
             </div>
 
             <!-- Campo para a Descrição do Evento -->
             <div class="form-group">
                 <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" class="form-control" rows="3" required>Descrição atual do evento</textarea>
+                <textarea id="descricao" name="descricao" class="form-control" rows="3" required>{{ event.descricao }}</textarea>
             </div>
 
             <!-- Campo para o Preço de Inscrição -->
             <div class="form-group">
-                <label for="preco_inscricao">Preço de Inscrição (€)</label>
-                <input type="number" id="preco_inscricao" name="preco_inscricao" class="form-control" value="5" min="0" required>
+                <label for="precoinscricao">Preço de Inscrição (€)</label>
+                <input type="number" id="precoinscricao" name="precoinscricao" class="form-control" value="{{ event.precoinscricao }}" min="0" required>
             </div>
 
             <!-- Campo para selecionar palestrante -->
             <div class="form-group">
                 <label for="palestrante">Escolha o Palestrante</label>
                 <select id="palestrante" name="palestrante" class="form-control" required>
-                    <option value="" disabled selected>Selecione um palestrante</option>
-                    <option value="palestrante1">Palestrante 1</option>
-                    <option value="palestrante2">Palestrante 2</option>
+                    <option value="" disabled>Selecione um palestrante</option>
+                    {% for speaker in speakers %}
+                        <option value="{{ speaker.0 }}" {% if speaker.0 == event.id_utilizador %}selected{% endif %}>
+                            {{ speaker.1 }}
+                        </option>
+                    {% endfor %}
                 </select>
             </div>
 

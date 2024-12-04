@@ -65,6 +65,7 @@ $$;
 -- PROCEDURE UPDATE EVENTOS
 CREATE OR REPLACE PROCEDURE proc_update_eventos(
     idEvento INT,
+    idpalestrante INT,
     nomeEvento VARCHAR(100),
     dataEvento TIMESTAMP,
     localEvento VARCHAR(200),
@@ -76,7 +77,8 @@ LANGUAGE PLPGSQL
 AS $$
 BEGIN
     UPDATE Eventos
-    SET Nome = nomeEvento,
+    SET id_utilizador = idpalestrante,
+	Nome = nomeEvento,
         Data = dataEvento,
         Local = localEvento,
         Telefone = telefoneEvento,

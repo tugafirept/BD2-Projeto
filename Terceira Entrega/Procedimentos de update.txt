@@ -23,16 +23,18 @@ CREATE OR REPLACE PROCEDURE proc_update_palestrante(
     nomeUtilizador VARCHAR(100), 
     emailUtilizador VARCHAR(150), 
     dataNascimentoUtilizador TIMESTAMP,
-    custoPalestrante DECIMAL
+    CP DECIMAL
 )
 LANGUAGE PLPGSQL
 AS $$
 BEGIN
+    -- Atualiza os dados do utilizador na tabela principal
     CALL proc_update_utilizador(idUtilizador, nomeUtilizador, emailUtilizador, dataNascimentoUtilizador);
 
+    -- Atualiza o custo do palestrante
     UPDATE Palestrantes
-    SET CustoPalestrante = custoPalestrante
-    WHERE Id_utilizador = idUtilizador;
+    SET custopalestrante = CP 
+    WHERE id_utilizador = idUtilizador;
 END
 $$;
 

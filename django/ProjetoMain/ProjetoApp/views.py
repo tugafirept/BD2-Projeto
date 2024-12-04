@@ -52,7 +52,19 @@ def companies_view(request):
     return render(request, 'companies.html')  # Renderiza a página companies.html
 
 def speakers_view(request):
-    return render(request, 'speakers.html')   # Renderiza a página speakers.html
+    # Abrir conexão ao banco
+    with connections['default'].cursor() as cursor:
+        # Query direta para a view SQL
+        cursor.execute("SELECT id_utilizador, nome, email, data_nascimento, data_registo, custopalestrante, dataficoupalestrante FROM view_palestrantes;")
+        # Obter todos os resultados
+        users = cursor.fetchall()
+
+    # Contexto para enviar os dados para o template
+    context = {
+        'users': users,  # Lista de utilizadores
+    }
+
+    return render(request, 'speakers.html', context) # Renderiza a página speakers.html
 
 def events_view(request):
     return render(request, 'events.html') # Renderiza a página events.html
@@ -66,7 +78,7 @@ def event_details_view(request):
 def edit_user_view(request, user_id):
     # Query SQL para obter o utilizador específico
     with connection.cursor() as cursor:
-        cursor.execute("SELECT Id_utilizador, Nome, Email, Data_Nascimento, Data_Registo FROM view_utilizadores WHERE Id_utilizador = %s", [user_id])
+        cursor.execute("SELECT id_utilizador, Nome, Email, Data_Nascimento, Data_Registo FROM view_utilizadores WHERE id_utilizador = %s", [user_id])
         user = cursor.fetchone()
 
     if request.method == 'POST':
@@ -96,8 +108,39 @@ def edit_user_view(request, user_id):
     return render(request, 'edit_user.html', context)
 
 
-def edit_speaker_view(request):
-    return render(request, 'edit_speaker.html') 
+def edit_speaker_view(request,user_id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id_utilizador, nome, email, data_nascimento, data_registo, custopalestrante, dataficoupalestrante FROM view_palestrantes WHERE id_utilizador = %s", [user_id])
+        user = cursor.fetchone()
+
+    if request.method == 'POST':
+        # Dados enviados pelo formulário
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        data_nascimento = request.POST.get('data_nascimento')
+        custopalestrante = request.POST.get('custopalestrante')
+
+        # Chamar o procedimento armazenado para atualizar os dados
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                CALL proc_update_palestrante(%s, %s, %s, %s, %s)
+            """, [user_id, nome, email, data_nascimento,custopalestrante])
+
+        return redirect('speakers') # Redireciona para uma página de sucesso ou lista de utilizadores
+
+    # Passa os dados do utilizador para o template
+    context = {
+        'user': {
+            'id': user[0],
+            'nome': user[1],
+            'email': user[2],
+            'data_nascimento': user[3],
+            'data_registo': user[4],
+            'custopalestrante': user[5],
+            'dataficoupalestrante': user[6],
+        }
+    }
+    return render(request, 'edit_speaker.html', context)
 
 def edit_company_view(request):
     return render(request, 'edit_company.html') 

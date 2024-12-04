@@ -34,14 +34,10 @@ def register_user(request):
     return render(request, 'Register.html', context)  # Renderiza a página de registo
 
 def users_view(request):
-    # Abrir conexão ao banco
     with connections['default'].cursor() as cursor:
-        # Query direta para a view SQL
         cursor.execute("SELECT id_utilizador, nome, email, data_nascimento, data_registo FROM view_utilizadores;")
-        # Obter todos os resultados
         users = cursor.fetchall()
 
-    # Contexto para enviar os dados para o template
     context = {
         'users': users,  # Lista de utilizadores
     }
@@ -49,7 +45,15 @@ def users_view(request):
     return render(request, 'users.html', context)
 
 def companies_view(request):
-    return render(request, 'companies.html')  # Renderiza a página companies.html
+    with connections['default'].cursor() as cursor:
+        cursor.execute("SELECT id_empresa, nome, email, local, telefone, data_registo FROM view_empresas;")
+        companies = cursor.fetchall()
+
+    context = {
+        'companies': companies,  # Lista de empresas
+    }
+
+    return render(request, 'companies.html', context)
 
 def speakers_view(request):
     return render(request, 'speakers.html')   # Renderiza a página speakers.html
@@ -64,9 +68,9 @@ def event_details_view(request):
     return render(request, 'event_details.html') 
 
 def edit_user_view(request, user_id):
-    # Query SQL para obter o utilizador específico
+    # Query para obter o utilizador específico
     with connection.cursor() as cursor:
-        cursor.execute("SELECT Id_utilizador, Nome, Email, Data_Nascimento, Data_Registo FROM view_utilizadores WHERE Id_utilizador = %s", [user_id])
+        cursor.execute("SELECT id_utilizador, nome, email, data_nascimento, data_registo FROM view_utilizadores WHERE id_utilizador = %s", [user_id])
         user = cursor.fetchone()
 
     if request.method == 'POST':
@@ -81,7 +85,7 @@ def edit_user_view(request, user_id):
                 CALL proc_update_utilizador(%s, %s, %s, %s)
             """, [user_id, nome, email, data_nascimento])
 
-        return redirect('users') # Redireciona para uma página de sucesso ou lista de utilizadores
+        return redirect('users')
 
     # Passa os dados do utilizador para o template
     context = {
@@ -99,8 +103,40 @@ def edit_user_view(request, user_id):
 def edit_speaker_view(request):
     return render(request, 'edit_speaker.html') 
 
-def edit_company_view(request):
-    return render(request, 'edit_company.html') 
+def edit_company_view(request, company_id):
+    # Query para obter a empresa específica
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT id_empresa, nome, email, local, telefone, data_registo FROM view_empresas WHERE id_empresa = %s", [company_id])
+        company = cursor.fetchone()
+
+    if request.method == 'POST':
+        # Dados enviados pelo formulário
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        local = request.POST.get('local')
+        telefone = request.POST.get('telefone')
+        data_registo = request.POST.get('data_registo')
+
+        # Chamar o procedimento armazenado para atualizar os dados
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                CALL proc_update_empresas(%s, %s, %s, %s, %s, %s)
+            """, [company_id, nome, email, local, telefone, data_registo])
+
+        return redirect('companies')
+
+    # Passa os dados do utilizador para o template
+    context = {
+        'company': {
+            'id': company[0],
+            'nome': company[1],
+            'email': company[2],
+            'local': company[3],
+            'telefone': company[4],
+            'data_registo': company[5]
+        }
+    }
+    return render(request, 'edit_company.html', context)
 
 def edit_event_view(request):
     return render(request, 'edit_event.html') 

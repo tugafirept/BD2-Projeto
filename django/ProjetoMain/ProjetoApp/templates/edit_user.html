@@ -4,7 +4,7 @@
     <div class="container mt-5">
         <h2>Editar Utilizador</h2>
         <form method="post">
-            {% csrf_token %} <!-- Token de segurança obrigatório para formulários POST -->
+            {% csrf_token %}
 
             <!-- Campo para o Nome -->
             <div class="form-group">
@@ -26,7 +26,7 @@
 
             <!-- Botão para Salvar -->
             <button type="submit" class="btn btn-primary">Guardar Alterações</button>
-            <a href="{% url 'users' %}" class="btn btn-secondary">Cancelar</a> <!-- Altere o link para o URL correto -->
+            <a href="{% url 'users' %}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 {% endblock %}

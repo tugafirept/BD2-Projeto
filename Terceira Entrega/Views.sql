@@ -58,3 +58,27 @@ FROM Despesas D
         ON D.Id_utilizador = U.Id_utilizador
 ORDER BY D.Id_Despesa ASC;
 
+
+
+-- Alterar o proprietário das views para bd2admin
+
+-- VIEW USERS
+ALTER VIEW view_utilizadores OWNER TO bd2admin;
+
+-- VIEW PALESTRANTES
+ALTER VIEW view_palestrantes OWNER TO bd2admin;
+
+-- VIEW EMPRESAS
+ALTER VIEW view_empresas OWNER TO bd2admin;
+
+-- VIEW EVENTOS
+ALTER VIEW view_eventos OWNER TO bd2admin;
+
+-- VIEW DETALHES EVENTOS
+ALTER VIEW view_eventos_detalhes OWNER TO bd2admin;
+
+-- VIEW PAGAMENTOS
+ALTER VIEW view_pagamentos OWNER TO bd2admin;
+
+-- VIEW DESPESAS
+ALTER VIEW view_despesas OWNER TO bd2admin;

@@ -80,3 +80,20 @@ FOR EACH ROW
 EXECUTE FUNCTION excluir_evento_cascata();
 
 
+
+-- Alterar o proprietário das funções e triggers para bd2admin
+
+-- Trigger DATA REGISTO
+ALTER FUNCTION set_data_registo() OWNER TO bd2admin;
+
+-- Trigger VALIDAR EMAIL
+ALTER FUNCTION validar_email_unico() OWNER TO bd2admin;
+
+-- Trigger EXCLUSÃO USER
+ALTER FUNCTION excluir_utilizador_cascata() OWNER TO bd2admin;
+
+-- Trigger EXCLUSÃO EVENTOS
+ALTER FUNCTION excluir_evento_cascata() OWNER TO bd2admin;
+
+
+

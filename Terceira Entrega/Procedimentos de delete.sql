@@ -62,3 +62,25 @@ BEGIN
     WHERE Id_Inscricao = idInscricao;
 END
 $$;
+
+
+-- Alterar o dono do procedimento DELETE UTILIZADOR
+ALTER PROCEDURE proc_delete_utilizador(INT)
+    OWNER TO bd2admin;
+
+-- Alterar o dono do procedimento DELETE PALESTRANTE
+ALTER PROCEDURE proc_delete_palestrante(INT)
+    OWNER TO bd2admin;
+
+-- Alterar o dono do procedimento DELETE EMPRESA
+ALTER PROCEDURE proc_delete_empresa(INT)
+    OWNER TO bd2admin;
+
+-- Alterar o dono do procedimento DELETE EVENTO
+ALTER PROCEDURE proc_delete_evento(INT)
+    OWNER TO bd2admin;
+
+-- Alterar o dono do procedimento DELETE INSCRICAO
+ALTER PROCEDURE proc_delete_inscricao(INT)
+    OWNER TO bd2admin;
+

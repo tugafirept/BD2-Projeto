@@ -7,11 +7,12 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
 CREATE TRIGGER trigger_set_data_registo
 BEFORE INSERT ON UTILIZADORES
 FOR EACH ROW
 EXECUTE FUNCTION set_data_registo();
+
+
 
 
 -- TRIGGER VALIDAR EMAIL
@@ -29,6 +30,7 @@ CREATE OR REPLACE TRIGGER trigger_validar_email_unico
 BEFORE INSERT ON UTILIZADORES
 FOR EACH ROW
 EXECUTE FUNCTION validar_email_unico();
+
 
 
 
@@ -61,6 +63,7 @@ EXECUTE FUNCTION excluir_utilizador_cascata();
 
 
 
+
 -- FUNCTION EXCLUSÃO EVENTOS
 CREATE OR REPLACE FUNCTION excluir_evento_cascata()
 RETURNS TRIGGER AS $$
@@ -80,6 +83,8 @@ FOR EACH ROW
 EXECUTE FUNCTION excluir_evento_cascata();
 
 
+
+
 -- FUNCTION EXCLUIR EMPRESAS
 CREATE OR REPLACE FUNCTION excluir_empresa_cascata()
 RETURNS TRIGGER AS $$
@@ -95,6 +100,28 @@ CREATE OR REPLACE TRIGGER trigger_excluir_empresa_cascata
 BEFORE DELETE ON EMPRESAS
 FOR EACH ROW
 EXECUTE FUNCTION excluir_empresa_cascata();
+
+
+
+
+CREATE OR REPLACE FUNCTION create_inscricao_pagamentos()
+RETURNS TRIGGER AS $$
+DECLARE
+    valor_inscricao DECIMAL;
+BEGIN
+    SELECT precoinscricao INTO valor_inscricao FROM eventos WHERE id_evento = NEW.id_evento;
+
+    CALL insert_pagamento(NEW.id_inscricao, NEW.id_evento, valor_inscricao, current_timestamp::TIMESTAMP);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trigger_create_inscricao_pagamentos
+AFTER INSERT ON INSCRICOES
+FOR EACH ROW
+EXECUTE FUNCTION create_inscricao_pagamentos();
+
 
 
 -- Alterar o proprietário das funções e triggers para bd2admin

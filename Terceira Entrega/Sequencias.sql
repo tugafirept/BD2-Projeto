@@ -21,3 +21,26 @@ ALTER TABLE INSCRICOES ALTER COLUMN ID_INSCRICAO SET DEFAULT NEXTVAL('seq_inscri
 -- Sequência para PAGAMENTOS
 CREATE SEQUENCE seq_pagamentos_id_pagamento START WITH 1 INCREMENT BY 1;
 ALTER TABLE PAGAMENTOS ALTER COLUMN ID_PAGAMENTO SET DEFAULT NEXTVAL('seq_pagamentos_id_pagamento');
+
+
+
+-- Alterar o proprietário das sequências para bd2admin
+
+-- Sequência para UTILIZADORES
+ALTER SEQUENCE seq_utilizadores_id_utilizador OWNER TO bd2admin;
+
+-- Sequência para EMPRESAS
+ALTER SEQUENCE seq_empresas_id_empresa OWNER TO bd2admin;
+
+-- Sequência para EVENTOS
+ALTER SEQUENCE seq_eventos_id_evento OWNER TO bd2admin;
+
+-- Sequência para DESPESAS
+ALTER SEQUENCE seq_despesas_id_despesa OWNER TO bd2admin;
+
+-- Sequência para INSCRICOES
+ALTER SEQUENCE seq_inscricoes_id_inscricao OWNER TO bd2admin;
+
+-- Sequência para PAGAMENTOS
+ALTER SEQUENCE seq_pagamentos_id_pagamento OWNER TO bd2admin;
+

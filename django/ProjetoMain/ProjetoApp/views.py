@@ -19,12 +19,13 @@ def register_user(request):
             local = form.cleaned_data.get('local')
             phone = form.cleaned_data.get('phone')
 
+            # Registar de acordo com o papel (empresa ou individual)
             if role == 'empresa':
                 ins_empresa(name, email, password, local, phone)
             elif role == 'individual':
                 ins_utilizador(name, email, password, birthdate)
 
-            return redirect('login')  # Redireciona para a página inicial após o registo
+            return redirect('login')  # Redireciona para a página de login após registo
     else:
         form = RegistoForm()
 
@@ -32,6 +33,7 @@ def register_user(request):
         'form': form,
     }
     return render(request, 'Register.html', context)  # Renderiza a página de registo
+
 
 def users_view(request):
     with connections['default'].cursor() as cursor:
@@ -71,7 +73,16 @@ def speakers_view(request):
     return render(request, 'speakers.html', context) # Renderiza a página speakers.html
 
 def events_view(request):
-    return render(request, 'events.html') # Renderiza a página events.html
+    with connections['default'].cursor() as cursor:
+        cursor.execute("SELECT id_evento, eventonome, empresanome, data, local, precoinscricao FROM view_eventos;")
+        events = cursor.fetchall()
+
+    context = {
+        'events': events, 
+    }
+
+    # Renderiza a página events.html com o contexto
+    return render(request, 'events.html', context)
 
 def registeredevents_view(request):
     return render(request, 'registeredEvents.html') # Renderiza a página registeredevents.html
@@ -181,8 +192,53 @@ def edit_company_view(request, company_id):
     }
     return render(request, 'edit_company.html', context)
 
-def edit_event_view(request):
-    return render(request, 'edit_event.html') 
+def edit_event_view(request, event_id):
+    with connection.cursor() as cursor:
+        # Buscar o evento específico
+        cursor.execute("""
+            SELECT id_evento, nome, data, local, telefone, descricao, precoinscricao, id_utilizador
+            FROM view_eventos_detalhes
+            WHERE id_evento = %s
+        """, [event_id])
+        event = cursor.fetchone()
+
+        cursor.execute("SELECT id_utilizador, nome FROM view_palestrantes;")
+        speakers = cursor.fetchall()
+
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        data = request.POST.get('data')
+        local = request.POST.get('local')
+        telefone = request.POST.get('telefone')
+        descricao = request.POST.get('descricao')
+        precoinscricao = request.POST.get('precoinscricao')
+        id_utilizador = request.POST.get('palestrante')
+
+        # Chamar o procedimento armazenado para atualizar os dados
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                CALL public.proc_update_eventos(%s, %s, %s, %s, %s, %s, %s, %s)
+            """, [event_id, nome, data, local, telefone, descricao, precoinscricao, id_utilizador])
+
+        return redirect('events')
+
+    # Passa os dados do evento e os palestrantes para o template
+    context = {
+        'event': {
+            'id': event[0],
+            'nome': event[1],
+            'data': event[2],
+            'local': event[3],
+            'telefone': event[4],
+            'descricao': event[5],
+            'precoinscricao': event[6],
+            'id_utilizador': event[7] 
+        },
+        'speakers': speakers  # Todos os palestrantes disponíveis
+    }
+
+    return render(request, 'edit_event.html', context)
+
 
 def edit_profile_view(request):
     return render(request, 'edit_profile.html') 

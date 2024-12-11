@@ -20,32 +20,21 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Conferência de Tecnologia</td>
-                <td>Tech Innovations</td>
-                <td>2024-05-15</td>
-                <td>Auditório Central</td>
-                <td>5€</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_event' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 1')">Eliminar</button>
-                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Conferência de Tecnologia')">Inscrever</button>
-                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->
-                </td>
-            </tr>
-            <tr>
-                <td>Workshop de Desenvolvimento Web</td>
-                <td>Web Solutions</td>
-                <td>2024-06-20</td>
-                <td>Centro de Convenções</td>
-                <td>5€</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" href="{% url 'edit_event' %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento 2')">Eliminar</button>
-                    <button class="btn btn-success btn-sm" onclick="alert('Inscrever em Workshop de Desenvolvimento Web')">Inscrever</button>
-                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a> <!-- Botão de Detalhes -->
-                </td>
-            </tr>
+            {% for event in events %}
+                <tr>
+                    <td>{{ event.1 }}</td>  <!-- Nome do Evento -->
+                    <td>{{ event.2 }}</td>  <!-- Nome da Empresa -->
+                    <td>{{ event.3 }}</td>  <!-- Data do Evento -->
+                    <td>{{ event.4 }}</td>  <!-- Local -->
+                    <td>{{ event.5 }}€</td>  <!-- Preço de Inscrição -->
+                    <td>
+                        <a class="btn btn-warning btn-sm" href="{% url 'edit_event' event.0 %}">Editar</a>  <!-- Passando o ID do Evento para a URL -->
+                        <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento {{ event.0 }}')">Eliminar</button>
+                        <button class="btn btn-success btn-sm" onclick="alert('Inscrever no evento {{ event.1 }}')">Inscrever</button>
+                        <a href="{% url 'event_details' event.0 %}" class="btn btn-info btn-sm">Detalhes</a>  <!-- Passando o ID do Evento para a URL -->
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

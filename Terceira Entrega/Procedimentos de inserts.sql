@@ -245,6 +245,46 @@ END;
 $BODY$;
 
 
+-- Alterar o proprietário do procedimento INSERT EVENTO
+ALTER PROCEDURE public.insert_evento(
+    INTEGER, INTEGER, VARCHAR, TIMESTAMP, VARCHAR, VARCHAR, VARCHAR, DECIMAL, DECIMAL
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT PAGAMENTO
+ALTER PROCEDURE public.insert_pagamento(
+    INTEGER, INTEGER, DECIMAL, TIMESTAMP
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT INSCRICAO
+ALTER PROCEDURE public.insert_inscricao(
+    INTEGER, INTEGER, TIMESTAMP
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT DESPESA
+ALTER PROCEDURE public.insert_despesa(
+    INTEGER, INTEGER, DECIMAL, TIMESTAMP
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT EMPRESA
+ALTER PROCEDURE public.insert_empresa(
+    VARCHAR, VARCHAR, VARCHAR, VARCHAR, VARCHAR
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT UTILIZADOR
+ALTER PROCEDURE public.insert_utilizador(
+    VARCHAR, VARCHAR, VARCHAR, TIMESTAMP
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT PALESTRANTE
+ALTER PROCEDURE public.insert_palestrante(
+    INTEGER, DECIMAL
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento INSERT ADMINISTRADOR
+ALTER PROCEDURE public.insert_administrador(
+    INTEGER, TIMESTAMP
+) OWNER TO bd2admin;
+
 
 
 

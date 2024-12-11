@@ -65,6 +65,7 @@ $$;
 -- PROCEDURE UPDATE EVENTOS
 CREATE OR REPLACE PROCEDURE proc_update_eventos(
     idEvento INT,
+    idpalestrante INT,
     nomeEvento VARCHAR(100),
     dataEvento TIMESTAMP,
     localEvento VARCHAR(200),
@@ -76,7 +77,8 @@ LANGUAGE PLPGSQL
 AS $$
 BEGIN
     UPDATE Eventos
-    SET Nome = nomeEvento,
+    SET id_utilizador = idpalestrante,
+	Nome = nomeEvento,
         Data = dataEvento,
         Local = localEvento,
         Telefone = telefoneEvento,
@@ -85,3 +87,24 @@ BEGIN
     WHERE Id_Evento = idEvento;
 END
 $$;
+
+
+-- Alterar o proprietário do procedimento UPDATE UTILIZADOR
+ALTER PROCEDURE proc_update_utilizador(
+    INT, VARCHAR(100), VARCHAR(150), TIMESTAMP
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento UPDATE PALESTRANTE
+ALTER PROCEDURE proc_update_palestrante(
+    INT, VARCHAR(100), VARCHAR(150), TIMESTAMP, DECIMAL
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento UPDATE EMPRESAS
+ALTER PROCEDURE proc_update_empresas(
+    INT, VARCHAR(100), VARCHAR(150), VARCHAR(100), VARCHAR(200), VARCHAR(25)
+) OWNER TO bd2admin;
+
+-- Alterar o proprietário do procedimento UPDATE EVENTOS
+ALTER PROCEDURE proc_update_eventos(
+    INT, INT, VARCHAR(100), TIMESTAMP, VARCHAR(200), VARCHAR(25), VARCHAR(300), DECIMAL
+) OWNER TO bd2admin;

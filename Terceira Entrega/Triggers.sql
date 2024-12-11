@@ -80,20 +80,36 @@ FOR EACH ROW
 EXECUTE FUNCTION excluir_evento_cascata();
 
 
+-- FUNCTION EXCLUIR EMPRESAS
+CREATE OR REPLACE FUNCTION excluir_empresa_cascata()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM EVENTOS WHERE ID_EMPRESA = OLD.ID_EMPRESA;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+-- TRIGGER EXCLUIR EMPRESAS
+CREATE OR REPLACE TRIGGER trigger_excluir_empresa_cascata
+BEFORE DELETE ON EMPRESAS
+FOR EACH ROW
+EXECUTE FUNCTION excluir_empresa_cascata();
+
 
 -- Alterar o proprietário das funções e triggers para bd2admin
 
--- Trigger DATA REGISTO
+-- FUNÇÃO DATA REGISTO
 ALTER FUNCTION set_data_registo() OWNER TO bd2admin;
 
--- Trigger VALIDAR EMAIL
+-- FUNÇÃO VALIDAR EMAIL
 ALTER FUNCTION validar_email_unico() OWNER TO bd2admin;
 
--- Trigger EXCLUSÃO USER
+-- FUNÇÃO EXCLUSÃO USER
 ALTER FUNCTION excluir_utilizador_cascata() OWNER TO bd2admin;
 
--- Trigger EXCLUSÃO EVENTOS
+-- FUNÇÃO EXCLUSÃO EVENTOS
 ALTER FUNCTION excluir_evento_cascata() OWNER TO bd2admin;
 
-
-
+-- FUNÇÃO EXCLUSÃO Empresas
+ALTER FUNCTION excluir_empresa_cascata() OWNER TO bd2admin;

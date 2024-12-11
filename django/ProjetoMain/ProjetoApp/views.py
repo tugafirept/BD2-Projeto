@@ -174,8 +174,8 @@ def edit_company_view(request, company_id):
         # Chamar o procedimento armazenado para atualizar os dados
         with connection.cursor() as cursor:
             cursor.execute("""
-                CALL proc_update_empresas(%s, %s, %s, %s, %s, %s)
-            """, [company_id, nome, email, local, telefone, data_registo])
+                CALL proc_update_empresas(%s, %s, %s, %s, %s)
+            """, [company_id, nome, email, local, telefone])
 
         return redirect('companies')
 

@@ -44,7 +44,6 @@ CREATE OR REPLACE PROCEDURE proc_update_empresas(
     idEmpresa INT,
     nomeEmpresa VARCHAR(100),
     emailEmpresa VARCHAR(150),
-    passwordEmpresa VARCHAR(100),
     localEmpresa VARCHAR(200),
     telefoneEmpresa VARCHAR(25)
 )
@@ -54,7 +53,6 @@ BEGIN
     UPDATE Empresas
     SET Nome = nomeEmpresa,
         Email = emailEmpresa,
-        Password = passwordEmpresa,
         Local = localEmpresa,
         Telefone = telefoneEmpresa
     WHERE Id_Empresa = idEmpresa;

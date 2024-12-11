@@ -10,16 +10,16 @@
                 <h2 class="mb-0">Informações do Evento</h2>
             </div>
             <div class="card-body">
-                <p><strong>Nome:</strong> Conferência de Tecnologia</p>
-                <p><strong>Nome da Empresa:</strong> Tech Innovations</p>
-                <p><strong>Palestrante:</strong> João Silva</p>
-                <p><strong>Telefone:</strong> 1234-567-890</p>
-                <p><strong>Descrição:</strong> Uma conferência sobre as últimas inovações em tecnologia.</p>
-                <p><strong>Data:</strong> 2024-05-15</p>
-                <p><strong>Local:</strong> Auditório Central</p>
-                <p><strong>Preço de Inscrição:</strong> 5€</p>
-                <p><strong>Preço Total do Evento:</strong> 50.00€</p>
-                <p><strong>Data de Criação:</strong> 2024-01-10</p>
+                <p><strong>Nome:</strong> {{ event.nome }}</p>
+                <p><strong>Nome da Empresa:</strong> {{ event.id_empresa }}</p>
+                <p><strong>Palestrante:</strong> {{ event.nomeutilizador }}</p>
+                <p><strong>Telefone:</strong> {{ event.telefone }}</p>
+                <p><strong>Descrição:</strong> {{ event.descricao }}</p>
+                <p><strong>Data:</strong> {{ event.data }}</p>
+                <p><strong>Local:</strong> {{ event.local }}</p>
+                <p><strong>Preço de Inscrição:</strong> {{ event.precoinscricao }}€</p>
+                <p><strong>Preço Total do Evento:</strong> {{ event.precototalevento }}€</p>
+                <p><strong>Data de Criação:</strong> {{ event.data_criacao }}</p>
             </div>
         </div>
 
@@ -37,16 +37,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for despesa in despesas %}
                         <tr>
-                            <td>João Silva</td>
-                            <td>2000€</td>
-                            <td>2024-05-01</td>
+                            <td>{{ despesa.3 }}</td> <!-- Nome do palestrante -->
+                            <td>{{ despesa.1 }}€</td> <!-- Total -->
+                            <td>{{ despesa.2 }}</td> <!-- Data -->
                         </tr>
-                        <tr>
-                            <td>Maria Oliveira</td>
-                            <td>1500€</td>
-                            <td>2024-05-02</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -66,16 +63,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for pagamento in pagamentos %}
                         <tr>
-                            <td>Carlos Pereira</td>
-                            <td>5€</td>
-                            <td>2024-05-10</td>
+                            <td>{{ pagamento.3 }}</td> <!-- Nome do utilizador -->
+                            <td>{{ pagamento.1 }}€</td> <!-- Total -->
+                            <td>{{ pagamento.2 }}</td> <!-- Data -->
                         </tr>
-                        <tr>
-                            <td>Ana Costa</td>
-                            <td>5€</td>
-                            <td>2024-05-11</td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

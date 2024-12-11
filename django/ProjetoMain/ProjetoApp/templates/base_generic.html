@@ -50,18 +50,32 @@
             <nav class="col-sm-2 sidebar">
                 {% block sidebar %}
                     <ul class="nav flex-column">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'users' %}">Utilizadores</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'speakers' %}">Palestrantes</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'companies' %}">Empresas</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
+                        {% if request.session.id %}
+                            {% if request.session.tipo == 'administrador' %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'users' %}">Utilizadores</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'speakers' %}">Palestrantes</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'companies' %}">Empresas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
+                            {% elif request.session.tipo == 'empresa' %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'speakers' %}">Palestrantes</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
+                            {% elif request.session.tipo == 'palestrante' %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
+                                <li class="nav-item"><a class="nav-link">Palestras</a></li> <!-- Nova página de Palestras -->
+                            {% elif request.session.tipo == 'utilizador' %}
+                                <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
+                            {% endif %}
+                        {% endif %}
                     </ul>
                 {% endblock %}
 
                 <!-- Botão de Logout -->
                 <div class="mt-3">
                     <a href="{% url 'edit_profile' %}" class="btn btn-secondary btn-block">Perfil</a>
-                    <a href="{% url 'login' %}" class="btn btn-danger btn-block">Logout</a>
+                    <a href="{% url 'logout' %}" class="btn btn-danger btn-block">Logout</a>
                 </div>
             </nav>
 

@@ -29,7 +29,7 @@
                     <td>{{ event.5 }}€</td>  <!-- Preço de Inscrição -->
                     <td>
                         <a class="btn btn-warning btn-sm" href="{% url 'edit_event' event.0 %}">Editar</a>  <!-- Passando o ID do Evento para a URL -->
-                        <button class="btn btn-danger btn-sm" onclick="alert('Eliminar evento {{ event.0 }}')">Eliminar</button>
+                        <a class="btn btn-danger btn-sm" href="{% url 'delete_event' event.0 %}" onclick="return confirm('Tem certeza que deseja eliminar este evento?')">Eliminar</a>
                         <button class="btn btn-success btn-sm" onclick="alert('Inscrever no evento {{ event.1 }}')">Inscrever</button>
                         <a href="{% url 'event_details' event.0 %}" class="btn btn-info btn-sm">Detalhes</a>  <!-- Passando o ID do Evento para a URL -->
                     </td>

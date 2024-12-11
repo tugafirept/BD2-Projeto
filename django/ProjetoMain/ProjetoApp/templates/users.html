@@ -23,7 +23,8 @@
                 <td>{{ user.4 }}</td> <!-- Data de Registo -->
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'edit_user' user.0 %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar utilizador {{ user.0 }}')">Eliminar</button>
+                    <a class="btn btn-danger btn-sm" href="{% url 'delete_user' user.0 %}" 
+                       onclick="return confirm('Tem certeza de que deseja eliminar o utilizador {{ user.1 }}?')">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

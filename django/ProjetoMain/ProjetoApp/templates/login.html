@@ -34,15 +34,8 @@
 <body>
     <div class="container login-container mt-5">
         <h1>Login</h1>
-        <form action="{% url 'users' %}" method="GET">  <!-- Redireciona para a página de utilizadores -->
-            <div class="form-group">
-                <label for="role">Login como:</label>
-                <select class="form-control" id="role" name="role" required>
-                    <option value="">Escolha uma opção</option>
-                    <option value="empresa">Empresa</option>
-                    <option value="individual">Individual</option>
-                </select>
-            </div>
+        <form action="{% url 'login' %}" method="POST">  <!-- A URL para a view de login -->
+            {% csrf_token %}
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" required>

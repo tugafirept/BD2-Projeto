@@ -103,6 +103,7 @@ EXECUTE FUNCTION excluir_empresa_cascata();
 
 
 
+<<<<<<< Updated upstream:Terceira Entrega/Triggers.sql
 
 CREATE OR REPLACE FUNCTION create_inscricao_pagamentos()
 RETURNS TRIGGER AS $$
@@ -122,6 +123,44 @@ AFTER INSERT ON INSCRICOES
 FOR EACH ROW
 EXECUTE FUNCTION create_inscricao_pagamentos();
 
+=======
+-- Função de Login com MD5
+CREATE OR REPLACE FUNCTION login(
+    p_email varchar,
+    p_senha varchar
+)
+RETURNS TABLE(id INT, tipo TEXT) AS $$
+DECLARE
+    v_id_utilizador INT;
+BEGIN
+    -- Verifica se é uma empresa
+    IF EXISTS (SELECT 1 FROM EMPRESAS WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha)) THEN
+		v_id_utilizador := (SELECT id_empresa FROM empresas WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha));
+        RETURN QUERY
+        SELECT v_id_utilizador, 'empresa';
+    -- Verifica se é um administrador
+    ELSIF EXISTS (SELECT 1 FROM ADMINISTRADORES WHERE ID_UTILIZADOR = (SELECT ID_UTILIZADOR FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha))) THEN
+        v_id_utilizador := (SELECT ID_UTILIZADOR FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha));
+        RETURN QUERY
+        SELECT v_id_utilizador, 'administrador';
+    -- Verifica se é um palestrante
+    ELSIF EXISTS (SELECT 1 FROM PALESTRANTES WHERE ID_UTILIZADOR = (SELECT ID_UTILIZADOR FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha))) THEN
+        v_id_utilizador := (SELECT ID_UTILIZADOR FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha));
+        RETURN QUERY
+        SELECT v_id_utilizador, 'palestrante';
+    -- Caso contrário, verifica se é um utilizador normal
+    ELSIF EXISTS (SELECT 1 FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha)) THEN
+        v_id_utilizador := (SELECT ID_UTILIZADOR FROM UTILIZADORES WHERE EMAIL = p_email AND PASSWORD = MD5(p_senha));
+        RETURN QUERY
+        SELECT v_id_utilizador, 'utilizador';
+    ELSE
+        -- Se não encontrar nenhum tipo de utilizador, retorna NULL
+        RETURN QUERY SELECT NULL::INT, 'invalido'::TEXT;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+>>>>>>> Stashed changes:Terceira Entrega/Triggers e funcoes.sql
 
 
 -- Alterar o proprietário das funções e triggers para bd2admin
@@ -140,3 +179,6 @@ ALTER FUNCTION excluir_evento_cascata() OWNER TO bd2admin;
 
 -- FUNÇÃO EXCLUSÃO Empresas
 ALTER FUNCTION excluir_empresa_cascata() OWNER TO bd2admin;
+
+-- FUNÇÃO login
+ALTER FUNCTION login OWNER TO bd2admin;

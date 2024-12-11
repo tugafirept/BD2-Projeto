@@ -17,3 +17,40 @@ def ins_utilizador(name, email, password, data_nascimento=None):
     )
     connections['default'].commit()
     cur.close()
+
+
+def del_utilizador(id_utilizador):
+    cur = connections['default'].cursor()
+    cur.execute(
+        "CALL proc_delete_utilizador(%s);",
+        [id_utilizador]
+    )
+    connections['default'].commit()
+    cur.close()
+
+def delete_event(event_id):
+    cur = connections['default'].cursor()
+    cur.execute(
+        "CALL proc_delete_evento(%s);",
+        [event_id]
+    )
+    connections['default'].commit()
+    cur.close()
+
+def delete_palestrante(id_utilizador):
+    cur = connections['default'].cursor()
+    cur.execute(
+        "CALL proc_delete_palestrante(%s);",
+        [id_utilizador]
+    )
+    connections['default'].commit()
+    cur.close()
+
+def delete_empresa(id_empresa):
+    cur = connections['default'].cursor()
+    cur.execute(
+        "CALL proc_delete_empresa(%s);",
+        [id_empresa]
+    )
+    connections['default'].commit()
+    cur.close()

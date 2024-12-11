@@ -28,7 +28,7 @@
                 <td>{{ user.6 }}</td> <!-- Data que Ficou Palestrante -->
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'edit_speaker' user.0 %}">Editar</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Eliminar palestrante {{ user.0 }}')">Eliminar</button>
+                    <a class="btn btn-danger btn-sm" href="{% url 'delete_palestrante' user.0 %}" onclick="return confirm('Tem certeza que deseja eliminar este palestrante?')">Eliminar</a>
                 </td>
             </tr>
             {% endfor %}

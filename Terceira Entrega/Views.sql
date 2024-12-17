@@ -75,7 +75,7 @@ CREATE OR REPLACE VIEW public.view_eventos_inscritos
      JOIN inscricoes i ON i.id_evento = ev.id_evento
 	 JOIN utilizadores u ON u.id_utilizador = i.id_utilizador
 	 GROUP BY 
-    ev.id_evento, ev.nome, em.nome, ev.data, ev.local, ev.precoinscricao, u.id_utilizador
+    ev.id_evento, ev.nome, em.nome, ev.data, ev.local, ev.precoinscricao, u.id_utilizador,i.id_inscricao
   ORDER BY ev.id_evento;
 
 

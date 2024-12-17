@@ -59,6 +59,14 @@ FROM Despesas D
 ORDER BY D.Id_Despesa ASC;
 
 
+CREATE OR REPLACE VIEW view_eventos_inscritos AS
+SELECT EV.Id_Evento, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao, I.id_utilizador
+FROM Eventos EV
+    JOIN Empresas EM
+        ON EV.Id_Empresa = EM.Id_Empresa
+    JOIN Inscricoes I
+        ON I.id_utilizador = EV.id_utilizador
+ORDER BY EV.Id_Evento ASC;
 
 -- Alterar o proprietário das views para bd2admin
 

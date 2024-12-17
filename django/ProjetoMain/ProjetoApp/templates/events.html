@@ -3,10 +3,12 @@
 {% block content %}
     <h1>Lista de Eventos</h1>
     
-    <!-- Botão para Criar Evento -->
+    <!-- Botão para Criar Evento (aparece apenas para empresas) -->
+    {% if request.session.tipo == 'empresa' %}
     <div class="mb-3">
         <a href="{% url 'create_event' %}" class="btn btn-primary">Criar Novo Evento</a>
     </div>
+    {% endif %}
     
     <table class="table table-striped">
         <thead>
@@ -28,9 +30,18 @@
                     <td>{{ event.4 }}</td>  <!-- Local -->
                     <td>{{ event.5 }}€</td>  <!-- Preço de Inscrição -->
                     <td>
-                        <a class="btn btn-warning btn-sm" href="{% url 'edit_event' event.0 %}">Editar</a>  <!-- Passando o ID do Evento para a URL -->
-                        <a class="btn btn-danger btn-sm" href="{% url 'delete_event' event.0 %}" onclick="return confirm('Tem certeza que deseja eliminar este evento?')">Eliminar</a>
-                        <button class="btn btn-success btn-sm" onclick="alert('Inscrever no evento {{ event.1 }}')">Inscrever</button>
+                        <!-- Botões Editar e Eliminar (aparecem apenas para quem não for utilizador ou palestrante) -->
+                        {% if request.session.tipo != 'utilizador' and request.session.tipo != 'palestrante' %}
+                            <a class="btn btn-warning btn-sm" href="{% url 'edit_event' event.0 %}">Editar</a>  <!-- Passando o ID do Evento para a URL -->
+                            <a class="btn btn-danger btn-sm" href="{% url 'delete_event' event.0 %}" onclick="return confirm('Tem certeza que deseja eliminar este evento?')">Eliminar</a>
+                        {% endif %}
+                        <!-- Botão de Inscrição (aparece apenas para utilizador ou palestrante) -->
+                        {% if request.session.tipo != 'empresa' %}
+                            <form action="{% url 'register_event' event.0 %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-success btn-sm">Inscrever</button>
+                            </form>
+                        {% endif %}
                         <a href="{% url 'event_details' event.0 %}" class="btn btn-info btn-sm">Detalhes</a>  <!-- Passando o ID do Evento para a URL -->
                     </td>
                 </tr>

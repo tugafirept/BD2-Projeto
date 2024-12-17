@@ -54,3 +54,25 @@ def delete_empresa(id_empresa):
     )
     connections['default'].commit()
     cur.close()
+
+def ins_evento(id_empresa, id_utilizador, nome, data, local, telefone, descricao, preco_inscricao, preco_total_evento):
+    cur = connections['default'].cursor()
+    
+    cur.execute(
+        """
+        CALL insert_evento(%s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """,
+        (id_empresa, id_utilizador, nome, data, local, telefone, descricao, preco_inscricao, preco_total_evento)
+    )
+    connections['default'].commit()
+    cur.close()
+
+def delete_inscricao(id_inscr):
+    cur = connections['default'].cursor()
+    cur.execute(
+        "CALL proc_delete_inscricao(%s);",
+        [id_inscr]
+    )
+    connections['default'].commit()
+    cur.close()
+

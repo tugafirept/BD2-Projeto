@@ -13,7 +13,9 @@
                 <th>Data de Registo</th>
                 <th>Custo</th>
                 <th>Data que Ficou Palestrante</th>
+                {% if user_type != "empresa" %}
                 <th>Ação</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -26,10 +28,12 @@
                 <td>{{ user.4 }}</td> <!-- Data de Registo -->
                 <td>{{ user.5 }}€</td> <!-- Custo -->
                 <td>{{ user.6 }}</td> <!-- Data que Ficou Palestrante -->
+                {% if user_type != "empresa" %}
                 <td>
                     <a class="btn btn-warning btn-sm" href="{% url 'edit_speaker' user.0 %}">Editar</a>
                     <a class="btn btn-danger btn-sm" href="{% url 'delete_palestrante' user.0 %}" onclick="return confirm('Tem certeza que deseja eliminar este palestrante?')">Eliminar</a>
                 </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

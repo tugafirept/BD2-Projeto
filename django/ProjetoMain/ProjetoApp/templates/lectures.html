@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1>Lista de Eventos como Palestrante</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Nome da Empresa</th>
+                <th>Data</th>
+                <th>Local</th>
+                <th>Preço de Inscrição</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for evento in eventos_palestrante %}
+                <tr>
+                    <td>{{ evento.0 }}</td>  <!-- Nome do evento -->
+                    <td>{{ evento.1 }}</td>  <!-- Nome da empresa -->
+                    <td>{{ evento.2 }}</td>  <!-- Data do evento -->
+                    <td>{{ evento.3 }}</td>  <!-- Local do evento -->
+                    <td>{{ evento.4 }}€</td>  <!-- Preço de Inscrição -->
+                    <td>
+                        <a href="{% url 'event_details' evento.5 %}" class="btn btn-info btn-sm">Detalhes</a>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Você não está palestrante em nenhum evento.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

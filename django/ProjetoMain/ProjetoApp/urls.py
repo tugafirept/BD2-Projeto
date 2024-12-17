@@ -27,6 +27,12 @@ urlpatterns = [
 
     path('createEvent/', views.create_event_view, name='create_event'),  # Rota para a página de criar evento
 
+    path('register_event/<int:event_id>/', views.register_event, name='register_event'),
+
+    path('palestrante/events/', views.palestrante_events_view, name='palestrante_events'),
+
+    path('cancelar_inscricao/<int:id_inscricao>/', views.cancelar_inscricao, name='cancel_inscricao'),
+
     path('logout/', views.logout_view, name='logout'),
     
 ]

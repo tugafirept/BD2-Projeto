@@ -23,7 +23,7 @@ ORDER BY Id_Empresa ASC;
 
 -- VIEW EVENTOS
 CREATE OR REPLACE VIEW view_eventos AS
-SELECT EV.Id_Evento, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao
+SELECT EV.Id_Evento, EV.Id_empresa, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao
 FROM Eventos EV
     JOIN Empresas EM
         ON EV.Id_Empresa = EM.Id_Empresa
@@ -59,14 +59,24 @@ FROM Despesas D
 ORDER BY D.Id_Despesa ASC;
 
 
-CREATE OR REPLACE VIEW view_eventos_inscritos AS
-SELECT EV.Id_Evento, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao, I.id_utilizador
-FROM Eventos EV
-    JOIN Empresas EM
-        ON EV.Id_Empresa = EM.Id_Empresa
-    JOIN Inscricoes I
-        ON I.id_utilizador = EV.id_utilizador
-ORDER BY EV.Id_Evento ASC;
+CREATE OR REPLACE VIEW public.view_eventos_inscritos
+ AS
+ SELECT ev.id_evento,
+    ev.nome AS eventonome,
+    em.nome AS empresanome,
+    ev.data,
+    ev.local,
+    ev.precoinscricao,
+    u.id_utilizador,
+    i.id_inscricao
+
+   FROM eventos ev
+     JOIN empresas em ON ev.id_empresa = em.id_empresa
+     JOIN inscricoes i ON i.id_evento = ev.id_evento
+	 JOIN utilizadores u ON u.id_utilizador = i.id_utilizador
+	 GROUP BY 
+    ev.id_evento, ev.nome, em.nome, ev.data, ev.local, ev.precoinscricao, u.id_utilizador
+  ORDER BY ev.id_evento;
 
 
 CREATE OR REPLACE VIEW view_eventos_inscritos_palestrantes AS

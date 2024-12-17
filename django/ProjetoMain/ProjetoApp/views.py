@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.db import connections, connection
 from .forms import RegistoForm
-from .basededados import ins_empresa, ins_utilizador, del_utilizador,delete_event,delete_palestrante,delete_empresa
+from .basededados import ins_empresa, ins_utilizador, del_utilizador,delete_event,delete_palestrante,delete_empresa,ins_evento,delete_inscricao
 from django.contrib import messages
 from django.contrib.auth import logout
 
@@ -130,16 +130,34 @@ def speakers_view(request):
         # Obter todos os resultados
         users = cursor.fetchall()
 
+    user_type = request.session.get('tipo')
     # Contexto para enviar os dados para o template
     context = {
-        'users': users,  # Lista de utilizadores
+        'users': users, # Lista de utilizadores
+        'user_type': user_type
     }
 
     return render(request, 'speakers.html', context) # Renderiza a página speakers.html
 
 def events_view(request):
+    user_type = request.session.get('tipo') 
+    user_id = request.session.get('id')
+
     with connections['default'].cursor() as cursor:
-        cursor.execute("SELECT id_evento, eventonome, empresanome, data, local, precoinscricao FROM view_eventos;")
+        if user_type == 'empresa':
+            # Se for empresa, mostra apenas os eventos dessa empresa
+            cursor.execute("""
+                SELECT id_evento, EventoNome, empresanome, data, local, precoinscricao 
+                FROM view_eventos
+                WHERE id_empresa = %s;
+            """, [user_id])
+        else:
+            # Caso contrário, mostra todos os eventos
+            cursor.execute("""
+                SELECT id_evento, EventoNome, empresanome, data, local, precoinscricao 
+                FROM view_eventos;
+            """)
+
         events = cursor.fetchall()
 
     context = {
@@ -148,6 +166,7 @@ def events_view(request):
 
     # Renderiza a página events.html com o contexto
     return render(request, 'events.html', context)
+
 
 def delete_event_view(request, event_id):
     try:
@@ -159,7 +178,26 @@ def delete_event_view(request, event_id):
     return redirect('events') 
 
 def registeredevents_view(request):
-    return render(request, 'registeredEvents.html') # Renderiza a página registeredevents.html
+    # Verifique se o id_utilizador está presente na sessão
+    user_id = request.session.get('id')
+    
+    # Se o ID do usuário não estiver presente, talvez seja necessário redirecionar ou mostrar uma mensagem de erro
+    if not user_id:
+        return render(request, 'error.html', {'message': 'Usuário não autenticado ou ID não encontrado na sessão.'})
+
+    # Consultar os eventos inscritos na view 'view_eventos_inscritos'
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT EventoNome, EmpresaNome, Data, Local, PrecoInscricao, Id_Evento, id_inscricao
+            FROM view_eventos_inscritos 
+            WHERE id_utilizador = %s
+        """, [user_id])
+        
+        # Obter todos os resultados
+        eventos_inscritos = cursor.fetchall()
+
+    # Passar os dados para o template
+    return render(request, 'registeredEvents.html', {'eventos_inscritos': eventos_inscritos})
 
 def event_details_view(request, event_id):
     with connection.cursor() as cursor:
@@ -358,9 +396,149 @@ def edit_event_view(request, event_id):
 
     return render(request, 'edit_event.html', context)
 
-
 def edit_profile_view(request):
-    return render(request, 'edit_profile.html') 
+    user_id = request.session.get('id')
+    user_type = request.session.get('tipo')
+
+    # Inicializa as variáveis que vamos passar para o template
+    user_data = {}
+    palestrante_data = {}
+    
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        data_nascimento = request.POST.get('data_nascimento')
+        palestrante = request.POST.get('palestrante')
+        custo_palestrante = request.POST.get('custo_palestrante')
+
+        # Atualiza os dados do utilizador
+        with connections['default'].cursor() as cursor:
+            # Atualiza os dados do utilizador (nome, email, data de nascimento)
+            cursor.callproc('proc_update_utilizador', [user_id, nome, email, data_nascimento])
+
+            # Verifica se o utilizador se tornou palestrante ou deixou de ser
+            if palestrante == 'sim':
+                # Se já for palestrante, atualiza o custo
+                if user_type == 'palestrante':
+                    cursor.callproc('proc_update_palestrante', [user_id, nome, email, data_nascimento, float(custo_palestrante)])
+                else:
+                    # Se não for palestrante, insere o utilizador na tabela de palestrantes
+                    cursor.callproc('insert_palestrante', [user_id, float(custo_palestrante) if custo_palestrante else 0])
+            
+            elif palestrante == 'nao' and user_type == 'palestrante':
+                # Se o utilizador está a deixar de ser palestrante, exclui da tabela Palestrantes
+                cursor.callproc('proc_delete_palestrante', [user_id])
+
+        # Redireciona para o perfil após a atualização
+        return redirect('edit_profile')
+
+    # Consulta os dados do utilizador
+    with connections['default'].cursor() as cursor:
+        if user_type in ['utilizador', 'administrador', 'palestrante']:
+            cursor.execute("""
+                SELECT nome, email, data_nascimento
+                FROM view_utilizadores
+                WHERE id_utilizador = %s;
+            """, [user_id])
+            user_data = cursor.fetchone()
+
+        if user_type == 'palestrante':
+            cursor.execute("""
+                SELECT custopalestrante
+                FROM palestrantes
+                WHERE id_utilizador = %s;
+            """, [user_id])
+            palestrante_data = cursor.fetchone()
+
+    context = {
+        'user_data': user_data,
+        'user_id': user_id,
+        'user_type': user_type,
+        'palestrante_data': palestrante_data,
+    }
+
+    return render(request, 'edit_profile.html', context)
+
 
 def create_event_view(request):
-    return render(request, 'create_event.html') 
+    with connection.cursor() as cursor:
+        # Buscar todos os palestrantes disponíveis
+        cursor.execute("SELECT id_utilizador, nome FROM view_palestrantes;")
+        speakers = cursor.fetchall()
+
+    if request.method == 'POST':
+        # Obtém os dados enviados pelo formulário
+        nome = request.POST.get('nome')
+        data = request.POST.get('data')
+        local = request.POST.get('local')
+        telefone = request.POST.get('telefone')
+        descricao = request.POST.get('descricao')
+        preco_inscricao = float(request.POST.get('preco_inscricao'))
+        palestrante_id = request.POST.get('palestrante')
+
+        id_empresa = request.session.get('id')
+
+        try:
+            # Chama a função para inserir o evento
+            ins_evento(
+                id_empresa=id_empresa,
+                id_utilizador=palestrante_id,  # Associa o palestrante selecionado ao evento
+                nome=nome,
+                data=data,
+                local=local,
+                telefone=telefone,
+                descricao=descricao,
+                preco_inscricao=preco_inscricao,
+                preco_total_evento=0  
+            )
+            messages.success(request, "Evento criado com sucesso!")
+            return redirect('events')  # Redireciona para a lista de eventos
+
+        except Exception as e:
+            messages.error(request, f"Erro ao criar evento: {str(e)}")
+
+    # Renderiza o formulário de criação e passa a lista de palestrantes
+    return render(request, 'create_event.html', {'speakers': speakers})
+
+
+def register_event(request, event_id):
+    if request.method == "POST":
+        user_id = request.session.get('id')
+        evento_id = event_id 
+
+        # Chamar o procedimento insert_inscricao
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                CALL public.insert_inscricao(%s, %s);
+            """, [evento_id, user_id])
+
+        # Adicionar uma mensagem de sucesso para o usuário
+        messages.success(request, "Inscrição realizada com sucesso!")
+
+        return redirect('events')  # Redirecionar de volta para a lista de eventos
+
+    return redirect('events')  # Redirecionar de volta caso o método não seja POST
+
+def palestrante_events_view(request):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT EventoNome, EmpresaNome, Data, Local, PrecoInscricao, Id_Evento 
+            FROM view_eventos_inscritos_palestrantes 
+            WHERE id_utilizador = %s
+        """, [request.session.get('id')])
+        
+        eventos_palestrante = cursor.fetchall()
+        
+        # Passar os dados para o template
+        return render(request, 'lectures.html', {'eventos_palestrante': eventos_palestrante})
+    
+def cancelar_inscricao(request, id_inscricao):
+    try:
+        delete_inscricao(id_inscricao)  # Chama a função que executa a procedure
+        messages.success(request, "Inscrição cancelada com sucesso!")
+    except Exception as e:
+        messages.error(request, f"Ocorreu um erro ao tentar cancelar a inscrição: {e}")
+
+    return redirect('registeredEvents')
+    
+

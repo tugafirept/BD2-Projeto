@@ -63,7 +63,7 @@
                             {% elif request.session.tipo == 'palestrante' %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
-                                <li class="nav-item"><a class="nav-link">Palestras</a></li> <!-- Nova página de Palestras -->
+                                <li class="nav-item"><a class="nav-link" href="{% url 'palestrante_events' %}">Palestras</a></li> <!-- Nova página de Palestras -->
                             {% elif request.session.tipo == 'utilizador' %}
                                 <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Eventos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="{% url 'registeredEvents' %}">Eventos Inscritos</a></li>
@@ -74,7 +74,9 @@
 
                 <!-- Botão de Logout -->
                 <div class="mt-3">
+                    {% if request.session.tipo != 'empresa' %}
                     <a href="{% url 'edit_profile' %}" class="btn btn-secondary btn-block">Perfil</a>
+                    {% endif %}
                     <a href="{% url 'logout' %}" class="btn btn-danger btn-block">Logout</a>
                 </div>
             </nav>

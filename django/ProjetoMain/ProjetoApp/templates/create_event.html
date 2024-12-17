@@ -3,7 +3,9 @@
 {% block content %}
     <div class="container mt-5">
         <h2>Criar Novo Evento</h2>
-        <form action="/create_event" method="post"> 
+        <form action="{% url 'create_event' %}" method="post">
+            {% csrf_token %} <!-- Proteção CSRF do Django -->
+
             <!-- Campo para o Nome do Evento -->
             <div class="form-group">
                 <label for="nome">Nome do Evento</label>
@@ -45,8 +47,9 @@
                 <label for="palestrante">Escolha o Palestrante</label>
                 <select id="palestrante" name="palestrante" class="form-control" required>
                     <option value="" disabled selected>Selecione um palestrante</option>
-                    <option value="palestrante1">Palestrante 1</option>
-                    <option value="palestrante2">Palestrante 2</option>
+                    {% for id, nome in speakers %}
+                        <option value="{{ id }}">{{ nome }}</option>
+                    {% endfor %}
                 </select>
             </div>
 

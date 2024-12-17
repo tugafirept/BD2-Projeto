@@ -3,46 +3,44 @@
 {% block content %}
     <div class="container mt-5">
         <h2>Perfil do Utilizador</h2>
-        <form action="/profile_edition" method="post">
+        <form action="{% url 'edit_profile' %}" method="post">
+            {% csrf_token %}
 
             <!-- Campo para o Nome -->
             <div class="form-group">
                 <label for="nome">Nome</label>
-                <input type="text" id="nome" name="nome" class="form-control" value="Nome Atual" required>
+                <input type="text" id="nome" name="nome" class="form-control" value="{{ user_data.0 }}" required>
             </div>
 
             <!-- Campo para o Email -->
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" class="form-control" value="email@exemplo.com" required>
-            </div>
-
-            <!-- Campo para a Password -->
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" class="form-control" placeholder="Digite a nova password">
+                <input type="email" id="email" name="email" class="form-control" value="{{ user_data.1 }}" required>
             </div>
 
             <!-- Campo para a Data de Nascimento -->
             <div class="form-group">
                 <label for="data_nascimento">Data de Nascimento</label>
-                <input type="date" id="data_nascimento" name="data_nascimento" class="form-control" value="1990-01-01" required>
+                <input type="text" id="data_nascimento" name="data_nascimento" class="form-control" value="{{ user_data.2 }}" required>
             </div>
 
-            <!-- Campo para a escolha de ser Palestrante -->
-            <div class="form-group">
-                <label for="palestrante">Deseja ser Palestrante?</label>
-                <select id="palestrante" name="palestrante" class="form-control" onchange="toggleCustoPalestrante(this)">
-                    <option value="nao">Não</option>
-                    <option value="sim">Sim</option>
-                </select>
-            </div>
+            {% if request.session.tipo != 'administrador' and request.session.tipo != 'empresa' %}
+                <!-- O campo não será exibido se o tipo for 'utilizador' ou 'palestrante' -->
+                <div class="form-group">
+                    <label for="palestrante">Deseja ser Palestrante?</label>
+                    <select id="palestrante" name="palestrante" class="form-control" onchange="toggleCustoPalestrante(this)">
+                        <option value="nao" {% if palestrante_data.0 == 0 %}selected{% endif %}>Não</option>
+                        <option value="sim" {% if palestrante_data.0 != 0 %}selected{% endif %}>Sim</option>
+                    </select>
+                </div>
 
-            <!-- Campo para o Custo do Palestrante (Escondido por padrão) -->
-            <div id="custo_palestrante_group" class="form-group" style="display: none;">
-                <label for="custo_palestrante">Custo de Palestrante (€)</label>
-                <input type="number" id="custo_palestrante" name="custo_palestrante" class="form-control" min="0" placeholder="Insira o custo">
-            </div>
+                <!-- Campo para o Custo do Palestrante (Exibe se 'palestrante' for 'sim') -->
+                <div id="custo_palestrante_group" class="form-group {% if palestrante_data.0 != 0 %}show{% else %}hide{% endif %}">
+                    <label for="custo_palestrante">Custo de Palestrante (€)</label>
+                    <input type="number" id="custo_palestrante" name="custo_palestrante" class="form-control" 
+                           value="{{ palestrante_data.0 }}" min="0" placeholder="Insira o custo">
+                </div>
+            {% endif %}
 
             <!-- Botões de Ação -->
             <button type="submit" class="btn btn-primary">Atualizar Perfil</button>

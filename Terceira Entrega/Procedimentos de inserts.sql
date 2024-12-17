@@ -78,10 +78,8 @@ $BODY$;
 --PROCEDIMENTO DE CRIAR INSCRICAO
 
 CREATE OR REPLACE PROCEDURE public.insert_inscricao(
-    IN p_id_evento INTEGER,
-    IN p_id_utilizador INTEGER,
-    IN p_data_inscricao TIMESTAMP
-)
+	IN p_id_evento integer,
+	IN p_id_utilizador integer)
 LANGUAGE 'plpgsql'
 AS $BODY$
 BEGIN
@@ -96,9 +94,8 @@ BEGIN
         NEXTVAL('seq_inscricoes_id_inscricao'),
         p_id_evento,
         p_id_utilizador,
-        p_data_inscricao
+        now()
     );
-
 
 END;
 $BODY$;

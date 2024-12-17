@@ -14,32 +14,28 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Conferência de Tecnologia</td>
-                <td>Tech Innovations</td>
-                <td>2024-05-15</td>
-                <td>Auditório Central</td>
-                <td>5€</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
-                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
-                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Cancelar Inscrição')">Cancelar Insc</button>
-                </td>
-            </tr>
-            <tr>
-                <td>Workshop de Desenvolvimento Web</td>
-                <td>Web Solutions</td>
-                <td>2024-06-20</td>
-                <td>Centro de Convenções</td>
-                <td>5€</td>
-                <td>
-                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
-                    <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
-                    <a href="{% url 'event_details' %}" class="btn btn-info btn-sm">Detalhes</a>
-                    <button class="btn btn-danger btn-sm" onclick="alert('Cancelar Inscrição')">Cancelar Insc</button>
-                </td>
-            </tr>
+            {% for evento in eventos_inscritos %}
+                <tr>
+                    <td>{{ evento.0 }}</td>  <!-- Nome do evento -->
+                    <td>{{ evento.1 }}</td>  <!-- Nome da empresa -->
+                    <td>{{ evento.2 }}</td>  <!-- Data do evento -->
+                    <td>{{ evento.3 }}</td>  <!-- Local do evento -->
+                    <td>{{ evento.4 }}€</td>  <!-- Preço de Inscrição -->
+                    <td>
+                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
+                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
+                        <a href="{% url 'event_details' evento.5 %}" class="btn btn-info btn-sm">Detalhes</a>
+                        <form action="{% url 'cancel_inscricao' evento.6 %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Cancelar Inscrição</button>
+                        </form>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Você não está inscrito em nenhum evento.</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 

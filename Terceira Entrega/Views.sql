@@ -69,7 +69,7 @@ FROM Eventos EV
 ORDER BY EV.Id_Evento ASC;
 
 
-CREATE OR REPLACE VIEW view_eventos_inscritos_ AS
+CREATE OR REPLACE VIEW view_eventos_inscritos_palestrantes AS
 SELECT EV.Id_Evento, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao, P.id_utilizador
 FROM Eventos EV
     JOIN Empresas EM
@@ -102,3 +102,5 @@ ALTER VIEW view_pagamentos OWNER TO bd2admin;
 ALTER VIEW view_despesas OWNER TO bd2admin;
 
 ALTER VIEW view_eventos_inscritos OWNER TO bd2admin;
+
+ALTER VIEW view_eventos_inscritos_palestrantes OWNER TO bd2admin;

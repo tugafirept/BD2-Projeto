@@ -90,3 +90,5 @@ ALTER VIEW view_pagamentos OWNER TO bd2admin;
 
 -- VIEW DESPESAS
 ALTER VIEW view_despesas OWNER TO bd2admin;
+
+ALTER VIEW view_eventos_inscritos OWNER TO bd2admin;

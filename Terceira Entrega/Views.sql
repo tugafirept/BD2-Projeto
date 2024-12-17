@@ -68,6 +68,16 @@ FROM Eventos EV
         ON I.id_utilizador = EV.id_utilizador
 ORDER BY EV.Id_Evento ASC;
 
+
+CREATE OR REPLACE VIEW view_eventos_inscritos_ AS
+SELECT EV.Id_Evento, EV.Nome AS EventoNome, EM.Nome AS EmpresaNome, EV.Data, EV.Local, EV.PrecoInscricao, P.id_utilizador
+FROM Eventos EV
+    JOIN Empresas EM
+        ON EV.Id_Empresa = EM.Id_Empresa
+    JOIN PALESTRANTES P
+        ON P.id_utilizador = EV.id_utilizador
+ORDER BY EV.Id_Evento ASC;
+
 -- Alterar o proprietário das views para bd2admin
 
 -- VIEW USERS

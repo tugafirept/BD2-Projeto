@@ -221,6 +221,8 @@ ALTER FUNCTION excluir_empresa_cascata() OWNER TO bd2admin;
 -- FUNÇÃO login
 ALTER FUNCTION login OWNER TO bd2admin;
 
+ALTER FUNCTION excluir_inscricao() OWNER TO bd2admin;
+
 ALTER FUNCTION create_inscricao_pagamentos() OWNER TO bd2admin;
 
 ALTER FUNCTION create_depesa_palestrante() OWNER TO bd2admin;

@@ -103,7 +103,43 @@ EXECUTE FUNCTION excluir_empresa_cascata();
 
 
 
-<<<<<<< Updated upstream:Terceira Entrega/Triggers.sql
+CREATE OR REPLACE FUNCTION excluir_inscricao()
+RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM PAGAMENTOS WHERE ID_INSCRICAO = OLD.ID_INSCRICAO;
+
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trigger_excluir_inscricao
+BEFORE DELETE ON INSCRICOES
+FOR EACH ROW
+EXECUTE FUNCTION excluir_inscricao();
+
+
+
+
+CREATE OR REPLACE FUNCTION create_depesa_palestrante()
+RETURNS TRIGGER AS $$
+DECLARE
+    valor_palestrante DECIMAL;
+BEGIN
+    SELECT custopalestrante INTO valor_palestrante FROM PALESTRANTES WHERE ID_UTILIZADOR = NEW.ID_UTILIZADOR;
+
+    INSERT INTO DESPESAS
+    VALUES(nextval('seq_despesas_id_despesa'), NEW.ID_EVENTO, NEW.ID_UTILIZADOR, valor_palestrante, NEW.DATA_CRIACAO);
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trigger_create_despesa_palestrante
+AFTER INSERT ON EVENTOS
+FOR EACH ROW
+EXECUTE FUNCTION create_depesa_palestrante();
+
+
 
 CREATE OR REPLACE FUNCTION create_inscricao_pagamentos()
 RETURNS TRIGGER AS $$
@@ -123,7 +159,10 @@ AFTER INSERT ON INSCRICOES
 FOR EACH ROW
 EXECUTE FUNCTION create_inscricao_pagamentos();
 
-=======
+
+
+
+
 -- Função de Login com MD5
 CREATE OR REPLACE FUNCTION login(
     p_email varchar,
@@ -160,7 +199,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
->>>>>>> Stashed changes:Terceira Entrega/Triggers e funcoes.sql
 
 
 -- Alterar o proprietário das funções e triggers para bd2admin

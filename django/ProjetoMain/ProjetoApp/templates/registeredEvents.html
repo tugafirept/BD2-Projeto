@@ -22,8 +22,31 @@
                     <td>{{ evento.3 }}</td>  <!-- Local do evento -->
                     <td>{{ evento.4 }}€</td>  <!-- Preço de Inscrição -->
                     <td>
-                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentModal">Comentar</button>
-                        <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ratingModal">Avaliar</button>
+                        <!-- Formulário de Comentário -->
+                        <form action="{% url 'add_comment' evento.5 %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <textarea class="form-control" name="comentario" rows="2" placeholder="Digite seu comentário aqui..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-sm">Comentar</button>
+                        </form>
+
+                        <!-- Formulário de Avaliação -->
+                        <form action="{% url 'add_rating' evento.5 %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="ratingSelect{{ evento.5 }}">Avaliar Evento</label>
+                                <select class="form-control" name="avaliacao" id="ratingSelect{{ evento.5 }}">
+                                    <option value="1">1 - Muito Mau</option>
+                                    <option value="2">2 - Mau</option>
+                                    <option value="3">3 - Razoável</option>
+                                    <option value="4">4 - Bom</option>
+                                    <option value="5">5 - Excelente</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success btn-sm">Avaliar</button>
+                        </form>
+
                         <a href="{% url 'event_details' evento.5 %}" class="btn btn-info btn-sm">Detalhes</a>
                         <form action="{% url 'cancel_inscricao' evento.6 %}" method="post" style="display:inline;">
                             {% csrf_token %}
@@ -38,63 +61,4 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <!-- Modal de Comentário -->
-    <div class="modal fade" id="commentModal" tabindex="-1" role="dialog" aria-labelledby="commentModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="commentModalLabel">Adicionar Comentário</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="commentText">Comentário</label>
-                            <textarea class="form-control" id="commentText" rows="3" placeholder="Digite seu comentário aqui..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Enviar Comentário</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de Avaliação -->
-    <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ratingModalLabel">Avaliar Evento</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="ratingSelect">Escolha uma Avaliação</label>
-                            <select class="form-control" id="ratingSelect">
-                                <option value="0">0 - Muito Mau</option>
-                                <option value="1">1 - Mau</option>
-                                <option value="2">2 - Razoável</option>
-                                <option value="3">3 - Bom</option>
-                                <option value="4">4 - Muito Bom</option>
-                                <option value="5">5 - Excelente</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
-
-{% block extra_js %}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

@@ -33,6 +33,12 @@ urlpatterns = [
 
     path('cancelar_inscricao/<int:id_inscricao>/', views.cancelar_inscricao, name='cancel_inscricao'),
 
+    path('add_comment/<int:id_evento>/', views.add_comment, name='add_comment'),
+    path('delete_comment/<uuid:id_comentario>/<int:event_id>/', views.delete_comment_view, name='delete_comment'),
+
+    path('add_rating/<int:id_evento>/', views.add_rating, name='add_rating'),
+    
+
     path('logout/', views.logout_view, name='logout'),
     
 ]

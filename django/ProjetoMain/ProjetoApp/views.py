@@ -2,9 +2,12 @@
 from django.shortcuts import render, redirect
 from django.db import connections, connection
 from .forms import RegistoForm
-from .basededados import ins_empresa, ins_utilizador, del_utilizador,delete_event,delete_palestrante,delete_empresa,ins_evento,delete_inscricao
+from .basededados import ins_empresa, ins_utilizador, del_utilizador,delete_event,delete_palestrante,delete_empresa
+from .basededados import ins_evento,delete_inscricao, save_comment, get_mongo_client, save_rating, delete_comment
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.http import JsonResponse
+import uuid
 
 def logout_view(request):
     logout(request)
@@ -224,6 +227,21 @@ def event_details_view(request, event_id):
             WHERE id_evento = %s
         """, [event_id])
         pagamentos = cursor.fetchall()
+    
+    db = get_mongo_client()
+    comentarios_collection = db['comentarios']
+    comentarios = comentarios_collection.find({"id_evento": event_id})
+
+    # Converter id_comentario de Binary para UUID string
+    comentarios_list = []
+    for comentario in comentarios:
+        # Convertendo o Binary para UUID e então para string
+        comentario['id_comentario'] = str(uuid.UUID(bytes=comentario['id_comentario']))
+
+        comentarios_list.append(comentario)
+
+    avaliacoes_collection = db['avaliacoes']
+    avaliacoes = avaliacoes_collection.find({"id_evento": event_id})
 
     # Contexto para o template
     context = {
@@ -243,9 +261,11 @@ def event_details_view(request, event_id):
         },
         "despesas": despesas,
         "pagamentos": pagamentos,
+        'comentarios': comentarios_list,  # Passar a lista de comentários com id_comentario como string
+        'avaliacoes': avaliacoes,
     }
 
-    return render(request, "event_details.html", context) 
+    return render(request, "event_details.html", context)
 
 def edit_user_view(request, user_id):
     # Query para obter o utilizador específico
@@ -500,24 +520,21 @@ def create_event_view(request):
     # Renderiza o formulário de criação e passa a lista de palestrantes
     return render(request, 'create_event.html', {'speakers': speakers})
 
-
 def register_event(request, event_id):
-    if request.method == "POST":
-        user_id = request.session.get('id')
-        evento_id = event_id 
-
-        # Chamar o procedimento insert_inscricao
+    id_utilizador = request.session.get('id')  # Obtenha o ID do utilizador
+    if id_utilizador:
         with connection.cursor() as cursor:
-            cursor.execute("""
+            try:
+                cursor.execute("""
                 CALL public.insert_inscricao(%s, %s);
-            """, [evento_id, user_id])
-
-        # Adicionar uma mensagem de sucesso para o usuário
-        messages.success(request, "Inscrição realizada com sucesso!")
-
-        return redirect('events')  # Redirecionar de volta para a lista de eventos
-
-    return redirect('events')  # Redirecionar de volta caso o método não seja POST
+            """, [event_id, id_utilizador])
+                messages.success(request, "Inscrição realizada com sucesso!")
+                return redirect('registeredEvents')  # Redirecionar de volta para a lista de eventos
+            except Exception as e:
+                messages.error(request, "Erro ao realizar inscrição. Talvez você já esteja inscrito.")
+    else:
+        messages.error(request, "Sessão expirada. Por favor, faça login novamente.")
+    return redirect('events')  # Substitua pelo nome da URL para listar eventos
 
 def palestrante_events_view(request):
     with connection.cursor() as cursor:
@@ -542,3 +559,40 @@ def cancelar_inscricao(request, id_inscricao):
     return redirect('registeredEvents')
     
 
+def add_comment(request, id_evento):
+    if request.method == "POST":
+        id_utilizador = request.session.get('id')  # Obtém o ID do utilizador da sessão
+        comentario = request.POST.get('comentario')  # Comentário enviado no formulário
+
+        # Salvar comentário no MongoDB
+
+        sucesso = save_comment(id_utilizador, id_evento, comentario)
+
+        if sucesso:
+            return redirect('registeredEvents')
+    return JsonResponse({'success': False, 'message': 'Método inválido.'})
+
+def add_rating(request, id_evento):
+    if request.method == "POST":
+        id_utilizador = request.session.get('id')  # Obtém o ID do utilizador da sessão
+        avaliacao = int(request.POST.get('avaliacao'))  # Avaliação enviada no formulário
+
+        # Salvar avaliação no MongoDB
+        sucesso = save_rating(id_utilizador, id_evento, avaliacao)
+
+        if sucesso:
+            return redirect('registeredEvents')  # Redireciona de volta para a lista de eventos inscritos
+
+    return JsonResponse({'success': False, 'message': 'Método inválido.'})
+
+def delete_comment_view(request, id_comentario, event_id):
+    # Verifica se o utilizador tem permissão para excluir
+    if request.session.get('tipo') in ['empresa', 'administrador']:
+        if delete_comment(id_comentario):
+            return redirect('event_details', event_id=event_id)  # Redireciona para os detalhes do evento após excluir
+        else:
+            # Caso o comentário não tenha sido encontrado ou a exclusão falhe
+            return redirect('events')  # Redireciona para a lista de eventos, por exemplo
+
+    # Caso o usuário não tenha permissão
+    return redirect('events')

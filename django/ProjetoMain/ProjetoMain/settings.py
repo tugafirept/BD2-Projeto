@@ -83,6 +83,14 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': '5432',
     },
+    'Mongo': {
+        'ENGINE': 'djongo',
+        'NAME': 'BD2_PROJETO',
+        'HOST' : 'mongodb://localhost:27017/',
+        'USER': 'bd2admin',  
+        'PASSWORD': 'bd2admin', 
+        'ENFORCE_SCHEMA': False,
+    }
 }
 
 

@@ -37,10 +37,7 @@
                         {% endif %}
                         <!-- Botão de Inscrição (aparece apenas para utilizador ou palestrante) -->
                         {% if request.session.tipo != 'empresa' %}
-                            <form action="{% url 'register_event' event.0 %}" method="post">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-success btn-sm">Inscrever</button>
-                            </form>
+                            <a href="{% url 'register_event' event.0 %}" class="btn btn-success btn-sm">Inscrever</a>
                         {% endif %}
                         <a href="{% url 'event_details' event.0 %}" class="btn btn-info btn-sm">Detalhes</a>  <!-- Passando o ID do Evento para a URL -->
                     </td>

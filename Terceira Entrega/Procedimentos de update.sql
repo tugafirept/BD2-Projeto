@@ -99,7 +99,7 @@ ALTER PROCEDURE proc_update_palestrante(
 
 -- Alterar o proprietário do procedimento UPDATE EMPRESAS
 ALTER PROCEDURE proc_update_empresas(
-    INT, VARCHAR(100), VARCHAR(150), VARCHAR(100), VARCHAR(200), VARCHAR(25)
+    INT, VARCHAR(100), VARCHAR(150), VARCHAR(200), VARCHAR(25)
 ) OWNER TO bd2admin;
 
 -- Alterar o proprietário do procedimento UPDATE EVENTOS

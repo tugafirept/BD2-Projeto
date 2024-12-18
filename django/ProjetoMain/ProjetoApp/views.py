@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.http import JsonResponse
 import uuid
+from datetime import datetime
 
 def logout_view(request):
     logout(request)
@@ -422,8 +423,8 @@ def edit_profile_view(request):
 
     # Inicializa as variáveis que vamos passar para o template
     user_data = {}
-    palestrante_data = {}
-    
+    palestrante_data = None
+
     if request.method == 'POST':
         nome = request.POST.get('nome')
         email = request.POST.get('email')
@@ -431,23 +432,29 @@ def edit_profile_view(request):
         palestrante = request.POST.get('palestrante')
         custo_palestrante = request.POST.get('custo_palestrante')
 
+        try:
+            data_nascimento = datetime.strptime(data_nascimento, '%b. %d, %Y, midnight').strftime('%Y-%m-%d')
+        except ValueError:
+            pass
+
         # Atualiza os dados do utilizador
         with connections['default'].cursor() as cursor:
-            # Atualiza os dados do utilizador (nome, email, data de nascimento)
-            cursor.callproc('proc_update_utilizador', [user_id, nome, email, data_nascimento])
+            cursor.execute("CALL proc_update_utilizador(%s, %s, %s, %s)", [user_id, nome, email, data_nascimento])
 
             # Verifica se o utilizador se tornou palestrante ou deixou de ser
             if palestrante == 'sim':
-                # Se já for palestrante, atualiza o custo
                 if user_type == 'palestrante':
-                    cursor.callproc('proc_update_palestrante', [user_id, nome, email, data_nascimento, float(custo_palestrante)])
+                    cursor.execute("CALL proc_update_palestrante(%s, %s, %s, %s, %s)", [user_id, nome, email, data_nascimento, float(custo_palestrante)])
                 else:
-                    # Se não for palestrante, insere o utilizador na tabela de palestrantes
-                    cursor.callproc('insert_palestrante', [user_id, float(custo_palestrante) if custo_palestrante else 0])
+                    cursor.execute("CALL insert_palestrante(%s, %s)", [user_id, float(custo_palestrante) if custo_palestrante else 0])
             
             elif palestrante == 'nao' and user_type == 'palestrante':
-                # Se o utilizador está a deixar de ser palestrante, exclui da tabela Palestrantes
-                cursor.callproc('proc_delete_palestrante', [user_id])
+                cursor.execute("CALL proc_delete_palestrante(%s)", [user_id])
+
+        if palestrante == 'sim' and user_type != 'palestrante':
+            request.session['tipo'] = 'palestrante'
+        elif palestrante == 'nao' and user_type == 'palestrante':
+            request.session['tipo'] = 'utilizador'
 
         # Redireciona para o perfil após a atualização
         return redirect('edit_profile')
@@ -478,6 +485,7 @@ def edit_profile_view(request):
     }
 
     return render(request, 'edit_profile.html', context)
+
 
 
 def create_event_view(request):

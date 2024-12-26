@@ -161,14 +161,16 @@ EXECUTE FUNCTION create_inscricao_pagamentos();
 
 
 
+CREATE OR REPLACE FUNCTION public.login(
+	p_email character varying,
+	p_senha character varying)
+    RETURNS TABLE(id integer, tipo text) 
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
 
-
--- Função de Login com MD5
-CREATE OR REPLACE FUNCTION login(
-    p_email varchar,
-    p_senha varchar
-)
-RETURNS TABLE(id INT, tipo TEXT) AS $$
+AS $BODY$
 DECLARE
     v_id_utilizador INT;
 BEGIN
@@ -197,7 +199,7 @@ BEGIN
         RETURN QUERY SELECT NULL::INT, 'invalido'::TEXT;
     END IF;
 END;
-$$ LANGUAGE plpgsql;
+$BODY$;
 
 
 

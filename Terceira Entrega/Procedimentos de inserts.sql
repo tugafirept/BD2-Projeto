@@ -254,7 +254,7 @@ ALTER PROCEDURE public.insert_pagamento(
 
 -- Alterar o proprietário do procedimento INSERT INSCRICAO
 ALTER PROCEDURE public.insert_inscricao(
-    INTEGER, INTEGER, TIMESTAMP
+    INTEGER, INTEGER
 ) OWNER TO bd2admin;
 
 -- Alterar o proprietário do procedimento INSERT DESPESA

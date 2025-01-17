@@ -207,7 +207,7 @@ def event_details_view(request, event_id):
     with connection.cursor() as cursor:
         cursor.execute("""
             SELECT id_evento, id_empresa, id_utilizador, nome, data, local, telefone, descricao,
-                   precoinscricao, precototalevento, data_criacao, nomeutilizador
+                   precoinscricao, precototalevento, data_criacao, nomeutilizador, nomeEmpresa
             FROM view_eventos_detalhes
             WHERE id_evento = %s
         """, [event_id])
@@ -259,6 +259,7 @@ def event_details_view(request, event_id):
             "precototalevento": event[9],
             "data_criacao": event[10],
             "nomeutilizador": event[11],
+            "nomeEmpresa": event[12],
         },
         "despesas": despesas,
         "pagamentos": pagamentos,

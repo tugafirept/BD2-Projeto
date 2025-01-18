@@ -22,6 +22,7 @@
             </div>
         </div>
 
+        {% if request.session.tipo == 'empresa' or request.session.tipo == 'administrador' %}
         <div class="card mb-4">
             <div class="card-header">
                 <h2 class="mb-0">Despesas</h2>
@@ -73,7 +74,7 @@
                 </table>
             </div>
         </div>
-
+        {% endif %}
         <div class="card mb-4">
             <div class="card-header">
                 <h2 class="mb-0">Avaliações</h2>
@@ -103,6 +104,7 @@
                 </table>
             </div>
         </div>
+        
 
         <!-- Seção de Comentários -->
         <div class="card mb-4">

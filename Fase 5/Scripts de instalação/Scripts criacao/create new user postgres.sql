@@ -1,1 +1,0 @@
-CREATE USER BD2Admin WITH PASSWORD 'bd2admin';

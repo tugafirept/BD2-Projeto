@@ -1,0 +1,92 @@
+Para avaliações:
+db.avaliacoes.insertMany(
+[
+    {
+        "_id": "6763075ec1884d500fe1ef4a",
+        "id_avaliacao": UUID('9562c1ed-d46a-4ee7-9dd4-e33921dda4c0'),
+        "id_utilizador": 1,
+        "id_evento": 1,
+        "avaliacao": 3,
+        "data_avaliacao": ISODate("2024-12-18T17:33:18.349+00:00")
+    },
+    {
+        "_id": "6763075ec1884d500fe1ef4b",
+        "id_avaliacao": UUID('e2146cd9-fb29-4cf1-b396-3efb9b6a17cf'),
+        "id_utilizador": 2,
+        "id_evento": 2,
+        "avaliacao": 4,
+        "data_avaliacao": ISODate("2024-12-19T14:45:09.123+00:00")
+    },
+    {
+        "_id": "6763075ec1884d500fe1ef4c",
+        "id_avaliacao": UUID('09db82f3-89e7-4f8d-b1be-f5fba8f4c4c8'),
+        "id_utilizador": 4,
+        "id_evento": 3,
+        "avaliacao": 5,
+        "data_avaliacao": ISODate("2024-12-20T09:00:45.456+00:00")
+    },
+    {
+        "_id": "6763075ec1884d500fe1ef4d",
+        "id_avaliacao": UUID('7f83b6e4-bdb2-41e9-a3e7-cae4f079ce8f'),
+        "id_utilizador": 3,
+        "id_evento": 4,
+        "avaliacao": 2,
+        "data_avaliacao": ISODate("2024-12-21T16:25:30.789+00:00")
+    },
+    {
+        "_id": "6763075ec1884d500fe1ef4e",
+        "id_avaliacao": UUID('5ec7f6c8-4169-4175-b95a-0fc80eaaed93'),
+        "id_utilizador": 2,
+        "id_evento": 5,
+        "avaliacao": 3,
+        "data_avaliacao": ISODate("2024-12-22T18:00:12.101+00:00")
+    }
+]);
+
+Para comentários:
+
+db.comentarios.insertMany(
+[
+    {
+        "_id": ObjectId("67630758c1884d500fe1ef44"),
+        "id_comentario": UUID("ba94030f-fe63-43e2-942d-dfc53496f2b9"),
+        "id_utilizador": 1,
+        "id_evento": 1,  
+        "comentario": "Excelente evento, adorei!",
+        "data_comentario": ISODate("2024-12-18T17:33:12.277+00:00")
+    },
+    {
+        "_id": ObjectId("67630758c1884d500fe1ef45"),
+        "id_comentario": UUID("a125d54e-1798-4fd9-99b7-0f72779d8e78"),
+        "id_utilizador": 2, 
+        "id_evento": 2, 
+        "comentario": "O evento foi bom, mas o local poderia ser melhor.",
+        "data_comentario": ISODate("2024-12-19T14:45:50.123+00:00")
+    },
+    {
+        "_id": ObjectId("67630758c1884d500fe1ef46"),
+        "id_comentario": UUID("0159d5c7-f285-4d84-8e74-85d413bc8124"),
+        "id_utilizador": 4,
+        "id_evento": 3, 
+        "comentario": "Gostei do conteúdo, mas a organização deixou a desejar.",
+        "data_comentario": ISODate("2024-12-20T09:15:45.456+00:00")
+    },
+    {
+        "_id": ObjectId("67630758c1884d500fe1ef47"),
+        "id_comentario": UUID("abc12345-b4b1-468b-8752-9b73fa98e0d1"),
+        "id_utilizador": 3,
+        "id_evento": 4,
+        "comentario": "Achei o evento interessante, mas poderia ter sido mais interativo.",
+        "data_comentario": ISODate("2024-12-21T16:30:22.789+00:00")
+    },
+    {
+        "_id": ObjectId("67630758c1884d500fe1ef48"),
+        "id_comentario": UUID("f07fcb31-7cb4-4f24-8a92-b7121d13fffe"),
+        "id_utilizador": 2,
+        "id_evento": 5, 
+        "comentario": "Evento incrível! Aprendi muito e o local estava perfeito.",
+        "data_comentario": ISODate("2024-12-22T18:05:10.101+00:00")
+    }
+]);
+
+

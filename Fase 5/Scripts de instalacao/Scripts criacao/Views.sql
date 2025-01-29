@@ -31,12 +31,25 @@ ORDER BY EV.Id_Evento ASC;
 
 
 -- VIEW DETALHES EVENTOS
-CREATE OR REPLACE VIEW view_eventos_detalhes AS
-SELECT EV.*, U.Nome as NomeUtilizador
-FROM Eventos EV
-    JOIN Utilizadores U
-        ON EV.Id_utilizador = U.Id_utilizador
-ORDER BY EV.Id_Evento ASC;
+CREATE OR REPLACE VIEW public.view_eventos_detalhes
+ AS
+ SELECT ev.id_evento,
+    ev.id_empresa,
+    ev.id_utilizador,
+    ev.nome,
+    ev.data,
+    ev.local,
+    ev.telefone,
+    ev.descricao,
+    ev.precoinscricao,
+    ev.precototalevento,
+    ev.data_criacao,
+    u.nome AS nomeutilizador,
+    e.nome AS nomeempresa
+   FROM eventos ev
+     JOIN utilizadores u ON ev.id_utilizador = u.id_utilizador
+     JOIN empresas e ON ev.id_empresa = e.id_empresa
+  ORDER BY ev.id_evento;
 
 
 -- VIEW PAGAMENTOS

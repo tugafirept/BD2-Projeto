@@ -45,10 +45,10 @@ CREATE OR REPLACE VIEW public.view_eventos_detalhes
     ev.precototalevento,
     ev.data_criacao,
     u.nome AS nomeutilizador,
-	e.nome AS nomeEmpresa
+    e.nome AS nomeempresa
    FROM eventos ev
      JOIN utilizadores u ON ev.id_utilizador = u.id_utilizador
-	 JOIN empresas e ON ev.id_empresa = e.id_empresa
+     JOIN empresas e ON ev.id_empresa = e.id_empresa
   ORDER BY ev.id_evento;
 
 
